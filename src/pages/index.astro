@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ThemeCard from '../components/ThemeCard.astro';
+import PersonCard from '../components/PersonCard.astro';
+import NewsCard from '../components/NewsCard.astro';
+import { getCollection } from 'astro:content';
+
+const themes = await getCollection('themes');
+const people = (await getCollection('people')).sort((a, b) => a.data.order - b.data.order);
+const pis = people.filter((p) => p.data.group === 'pi');
+const newsAll = await getCollection('news');
+const news = newsAll.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf()).slice(0, 3);
+---
+<BaseLayout>
+  <Hero />
+
+  <!-- About teaser -->
+  <section class="container-page py-24">
+    <SectionHeading
+      eyebrow="About"
+      title="Interdisciplinary by design."
+      subtitle="Synthetic data sits at the crossroads of computer science, social science, and the humanities. InterSynth Lab is built to live there — not above it."
+    />
+    <div class="mt-10 grid gap-6 md:grid-cols-3">
+      <div class="reveal gradient-border p-6">
+        <div class="font-mono text-xs uppercase tracking-widest text-[color:var(--color-accent-cyan)]">/01</div>
+        <h3 class="mt-3 text-lg font-semibold">What is synthetic data?</h3>
+        <p class="mt-2 text-sm text-[color:var(--color-muted)]">Algorithmically generated data that imitates real-world distributions — used to train models, protect privacy, and fill gaps where real data is scarce or sensitive.</p>
+      </div>
+      <div class="reveal gradient-border p-6">
+        <div class="font-mono text-xs uppercase tracking-widest text-[color:var(--color-accent-violet)]">/02</div>
+        <h3 class="mt-3 text-lg font-semibold">Why does it matter?</h3>
+        <p class="mt-2 text-sm text-[color:var(--color-muted)]">Synthetic data is being deployed in healthcare, finance, and public administration today. The questions of bias, transparency, and accountability are urgent — not theoretical.</p>
+      </div>
+      <div class="reveal gradient-border p-6">
+        <div class="font-mono text-xs uppercase tracking-widest" style="color: var(--color-accent-pink);">/03</div>
+        <h3 class="mt-3 text-lg font-semibold">Why interdisciplinary?</h3>
+        <p class="mt-2 text-sm text-[color:var(--color-muted)]">Generators are computational, but their consequences are social. We need both lenses — and the conversations between them.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Research themes -->
+  <section class="container-page py-24">
+    <SectionHeading eyebrow="Research" title="Five themes, one question." subtitle="What does it take for synthetic data to be trustworthy?" />
+    <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {themes.map((t, i) => <ThemeCard title={t.data.title} summary={t.data.summary} index={i} />)}
+    </div>
+    <div class="mt-10"><a href="/research" class="btn btn-ghost">Explore the research →</a></div>
+  </section>
+
+  <!-- PIs -->
+  <section class="container-page py-24">
+    <SectionHeading eyebrow="People" title="Led by three PIs across three universities." />
+    <div class="mt-10 grid gap-6 md:grid-cols-3">
+      {pis.map((p) => (
+        <PersonCard
+          name={p.data.name}
+          role={p.data.role}
+          affiliation={p.data.affiliation}
+          email={p.data.email}
+          bio={p.data.bio}
+          group={p.data.group}
+        />
+      ))}
+    </div>
+    <div class="mt-10"><a href="/people" class="btn btn-ghost">See the full team →</a></div>
+  </section>
+
+  <!-- News -->
+  <section class="container-page py-24">
+    <SectionHeading eyebrow="News" title="Latest from the lab." />
+    <div class="mt-10 grid gap-6 md:grid-cols-3">
+      {news.map((n) => (
+        <NewsCard
+          title={n.data.title}
+          date={n.data.date}
+          excerpt={n.data.excerpt}
+          tags={n.data.tags}
+          href={`/news/${n.id}`}
+        />
+      ))}
+    </div>
+    <div class="mt-10"><a href="/news" class="btn btn-ghost">All news →</a></div>
+  </section>
+
+  <!-- CTA -->
+  <section class="container-page py-24">
+    <div class="reveal gradient-border p-10 text-center sm:p-14">
+      <h2 class="text-3xl font-semibold tracking-tight sm:text-4xl">Want to collaborate?</h2>
+      <p class="mx-auto mt-4 max-w-2xl text-[color:var(--color-muted)]">We welcome conversations with researchers, journalists, public-sector partners, and anyone working on or thinking about synthetic data.</p>
+      <a href="/contact" class="btn btn-primary mt-8">Get in touch</a>
+    </div>
+  </section>
+</BaseLayout>

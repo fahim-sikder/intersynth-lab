@@ -1,0 +1,47 @@
+---
+import MeshBackground from './MeshBackground.astro';
+---
+<section class="relative overflow-hidden">
+  <MeshBackground />
+  <div class="container-page relative z-10 flex min-h-[88vh] flex-col justify-center py-24">
+    <span class="chip mb-6 w-fit">
+      <span class="inline-block h-1.5 w-1.5 rounded-full bg-[color:var(--color-accent-cyan)]"></span>
+      WASP-HS Research Environment
+    </span>
+
+    <h1 class="text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl">
+      Synthetic Data.<br />
+      <span class="gradient-text">Real Questions.</span>
+    </h1>
+
+    <p class="mt-6 max-w-2xl text-lg text-[color:var(--color-muted)] sm:text-xl">
+      InterSynth Lab is an interdisciplinary research environment where social
+      scientists and computer scientists investigate how synthetic data is made,
+      represented, and trusted — and what that means for society.
+    </p>
+
+    <div class="mt-10 flex flex-wrap gap-3">
+      <a href="/research" class="btn btn-primary">Our Research</a>
+      <a href="/people" class="btn btn-ghost">Meet the Team</a>
+    </div>
+
+    <div class="mt-16 grid grid-cols-2 gap-6 border-t border-[color:var(--color-border)] pt-8 sm:grid-cols-4">
+      <div>
+        <div class="font-mono text-2xl text-[color:var(--color-heading)]">4</div>
+        <div class="mt-1 text-xs uppercase tracking-widest text-[color:var(--color-muted)]">Universities</div>
+      </div>
+      <div>
+        <div class="font-mono text-2xl text-[color:var(--color-heading)]">7+</div>
+        <div class="mt-1 text-xs uppercase tracking-widest text-[color:var(--color-muted)]">Researchers</div>
+      </div>
+      <div>
+        <div class="font-mono text-2xl text-[color:var(--color-heading)]">5</div>
+        <div class="mt-1 text-xs uppercase tracking-widest text-[color:var(--color-muted)]">Research themes</div>
+      </div>
+      <div>
+        <div class="font-mono text-2xl text-[color:var(--color-heading)]">∞</div>
+        <div class="mt-1 text-xs uppercase tracking-widest text-[color:var(--color-muted)]">Open questions</div>
+      </div>
+    </div>
+  </div>
+</section>

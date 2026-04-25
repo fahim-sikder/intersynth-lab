@@ -1,0 +1,57 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import { getCollection } from 'astro:content';
+const pis = (await getCollection('people')).filter((p) => p.data.group === 'pi').sort((a, b) => a.data.order - b.data.order);
+---
+<BaseLayout title="Contact — InterSynth Lab">
+  <section class="container-page py-24">
+    <SectionHeading eyebrow="Contact" title="Let's talk." subtitle="For collaborations, press, or general inquiries — reach out to one of the PIs or use the lab address below." />
+
+    <div class="mt-12 grid gap-8 md:grid-cols-2">
+      <div class="reveal gradient-border p-8">
+        <h3 class="text-lg font-semibold">Principal Investigators</h3>
+        <ul class="mt-6 space-y-5">
+          {pis.map((p) => (
+            <li>
+              <div class="text-[color:var(--color-heading)]">{p.data.name}</div>
+              <div class="text-sm text-[color:var(--color-muted)]">{p.data.affiliation}</div>
+              {p.data.email && (
+                <a class="mt-1 inline-block font-mono text-sm text-[color:var(--color-accent-cyan)] hover:underline" href={`mailto:${p.data.email}`}>{p.data.email}</a>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="reveal gradient-border p-8">
+        <h3 class="text-lg font-semibold">Lab & Funding</h3>
+        <dl class="mt-6 space-y-5 text-sm">
+          <div>
+            <dt class="text-[color:var(--color-muted)]">Project page</dt>
+            <dd class="mt-1">
+              <a class="text-[color:var(--color-accent-cyan)] hover:underline" href="https://wasp-hs.org/synthetic-data-facts-representations-and-transparency/" target="_blank" rel="noopener">
+                wasp-hs.org/synthetic-data-facts-representations-and-transparency ↗
+              </a>
+            </dd>
+          </div>
+          <div>
+            <dt class="text-[color:var(--color-muted)]">WASP-HS general contact</dt>
+            <dd class="mt-1"><a class="font-mono text-[color:var(--color-accent-cyan)] hover:underline" href="mailto:contact@wasp-hs.org">contact@wasp-hs.org</a></dd>
+          </div>
+          <div>
+            <dt class="text-[color:var(--color-muted)]">Universities</dt>
+            <dd class="mt-1 text-[color:var(--color-heading)]">Linköping · Södertörn · Uppsala · Lund</dd>
+          </div>
+        </dl>
+
+        <p class="mt-8 rounded-lg border border-[color:var(--color-border)] bg-white/[0.02] p-4 text-xs text-[color:var(--color-muted)]">
+          The InterSynth Lab is supported by the Wallenberg AI, Autonomous Systems and
+          Software Program — Humanities and Society (WASP-HS), funded by the Marianne
+          and Marcus Wallenberg Foundation and the Marcus and Amalia Wallenberg
+          Foundation.
+        </p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

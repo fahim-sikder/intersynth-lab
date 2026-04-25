@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import PublicationItem from '../components/PublicationItem.astro';
+import { getCollection } from 'astro:content';
+
+const pubs = (await getCollection('publications')).sort((a, b) => b.data.year - a.data.year);
+const byYear = new Map<number, typeof pubs>();
+for (const p of pubs) {
+  const arr = byYear.get(p.data.year) ?? [];
+  arr.push(p);
+  byYear.set(p.data.year, arr);
+}
+const years = [...byYear.keys()].sort((a, b) => b - a);
+---
+<BaseLayout title="Publications — InterSynth Lab">
+  <section class="container-page py-24">
+    <SectionHeading eyebrow="Publications" title="Selected publications." subtitle="Papers, chapters, and preprints from members of the lab." />
+
+    {pubs.length === 0 && (
+      <p class="mt-12 text-[color:var(--color-muted)]">Publications will appear here as the lab's work is released.</p>
+    )}
+
+    {years.map((y) => (
+      <div class="mt-12">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-[color:var(--color-muted)]">{y}</h3>
+        <div class="mt-3">
+          {byYear.get(y)!.map((p) => (
+            <PublicationItem
+              title={p.data.title}
+              authors={p.data.authors}
+              venue={p.data.venue}
+              year={p.data.year}
+              type={p.data.type}
+              links={p.data.links}
+            />
+          ))}
+        </div>
+      </div>
+    ))}
+  </section>
+</BaseLayout>

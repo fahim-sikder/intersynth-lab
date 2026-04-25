@@ -1,0 +1,106 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PublicationItem from '../../components/PublicationItem.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const people = await getCollection('people');
+  const pubs = await getCollection('publications');
+  return people.map((p) => {
+    const mine = pubs
+      .filter((pub) => (pub.data.authorIds ?? []).includes(p.data.id))
+      .sort((a, b) => b.data.year - a.data.year);
+    return { params: { id: p.data.id }, props: { person: p.data, pubs: mine.map((m) => m.data) } };
+  });
+}
+
+const { person, pubs } = Astro.props;
+const initials = person.name
+  .split(/\s+/)
+  .map((w: string) => w[0])
+  .filter(Boolean)
+  .slice(0, 2)
+  .join('')
+  .toUpperCase();
+
+const groupLabel: Record<string, string> = {
+  pi: 'Principal Investigator',
+  researcher: 'Researcher',
+  phd: 'PhD Researcher',
+  collaborator: 'Collaborator',
+};
+
+const links = person.links ?? {};
+const orcidUrl = links.orcid
+  ? (links.orcid.startsWith('http') ? links.orcid : `https://orcid.org/${links.orcid}`)
+  : undefined;
+---
+<BaseLayout title={`${person.name} — InterSynth Lab`} description={person.bio ?? `${person.role} at ${person.affiliation}.`}>
+  <section class="container-page py-24">
+    <a href="/people" class="text-xs font-mono uppercase tracking-widest text-[color:var(--color-muted)] hover:text-[color:var(--color-heading)]">← People</a>
+
+    <div class="mt-10 grid gap-10 md:grid-cols-[auto_1fr] md:items-start">
+      <div
+        class="grid h-32 w-32 shrink-0 place-items-center rounded-full text-3xl font-semibold text-white"
+        style="background: linear-gradient(135deg, rgba(34,211,238,0.35), rgba(168,85,247,0.45));"
+        aria-hidden="true"
+      >{initials}</div>
+
+      <div>
+        <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">{person.name}</h1>
+        <p class="mt-2 font-mono text-xs uppercase tracking-widest text-[color:var(--color-muted)]">{person.role}</p>
+        <p class="mt-3 text-base text-[color:var(--color-text)]">{person.affiliation}</p>
+
+        <div class="mt-5 flex flex-wrap gap-2">
+          <span class="chip">{groupLabel[person.group] ?? person.group}</span>
+          {person.email && (
+            <a href={`mailto:${person.email}`} class="chip hover:text-[color:var(--color-heading)]">
+              {person.email}
+            </a>
+          )}
+        </div>
+
+        {(links.website || links.scholar || links.github || orcidUrl) && (
+          <div class="mt-6 flex flex-wrap gap-2">
+            {links.website && (
+              <a href={links.website} target="_blank" rel="noopener" class="chip hover:text-[color:var(--color-heading)]">Website ↗</a>
+            )}
+            {links.scholar && (
+              <a href={links.scholar} target="_blank" rel="noopener" class="chip hover:text-[color:var(--color-heading)]">Google Scholar ↗</a>
+            )}
+            {links.github && (
+              <a href={links.github} target="_blank" rel="noopener" class="chip hover:text-[color:var(--color-heading)]">GitHub ↗</a>
+            )}
+            {orcidUrl && (
+              <a href={orcidUrl} target="_blank" rel="noopener" class="chip hover:text-[color:var(--color-heading)]">ORCID ↗</a>
+            )}
+          </div>
+        )}
+
+        {person.bio && (
+          <div class="mt-10 max-w-3xl space-y-4 text-base leading-relaxed text-[color:var(--color-text)]">
+            <p>{person.bio}</p>
+          </div>
+        )}
+      </div>
+    </div>
+
+    {pubs.length > 0 && (
+      <div class="mt-20 max-w-4xl">
+        <h2 class="font-mono text-xs uppercase tracking-widest text-[color:var(--color-muted)]">Publications</h2>
+        <div class="mt-3">
+          {pubs.map((p) => (
+            <PublicationItem
+              title={p.title}
+              authors={p.authors}
+              venue={p.venue}
+              year={p.year}
+              type={p.type}
+              links={p.links}
+            />
+          ))}
+        </div>
+      </div>
+    )}
+  </section>
+</BaseLayout>

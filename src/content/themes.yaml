@@ -1,0 +1,24 @@
+- id: ontology
+  title: Ontologies of Synthetic Data
+  summary: What is synthetic data, really? We probe what it means for data to be "real," "generated," or "made up," and how those distinctions shape knowledge claims.
+  icon: layers
+
+- id: bias
+  title: Bias, Representation & Intersectionality
+  summary: Synthetic data inherits — and amplifies — the biases of the data and models that produce it. We study representation gaps and intersectional effects in generated datasets.
+  icon: scale
+
+- id: hallucinations
+  title: Intersectional Hallucinations
+  summary: When generative models invent people, identities, or facts, who and what is being misrepresented? We map the systematic errors that fall along intersectional axes.
+  icon: ghost
+
+- id: transparency
+  title: Verification & Transparency
+  summary: We design frameworks for documenting, verifying, and auditing synthetic datasets so downstream users can trust what they are working with.
+  icon: shield
+
+- id: society
+  title: Synthetic Data in Society
+  summary: From healthcare to public administration, synthetic data is being deployed at speed. We examine the practical, legal, and ethical stakes of those deployments.
+  icon: users

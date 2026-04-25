@@ -1,0 +1,83 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+---
+<BaseLayout title="About — InterSynth Lab">
+  <section class="container-page py-24">
+    <SectionHeading eyebrow="About" title="An interdisciplinary lab for the synthetic-data era." />
+
+    <div class="mt-12 grid gap-10 md:grid-cols-3">
+      <div class="reveal md:col-span-2 space-y-6 text-base leading-relaxed text-[color:var(--color-text)]">
+        <p>
+          <strong class="text-[color:var(--color-heading)]">InterSynth Lab</strong> is a research environment funded by
+          <a href="https://wasp-hs.org/" class="underline decoration-dotted hover:text-[color:var(--color-accent-cyan)]" target="_blank" rel="noopener">WASP-HS</a>
+          and the Wallenberg Foundations. We bring together researchers from
+          Linköping University, Södertörn University, Uppsala University, and Lund University to ask
+          one deceptively simple question: <em>what does it take for synthetic data to be trustworthy?</em>
+        </p>
+        <p>
+          The name says it: <em>inter</em>disciplinary work on <em>synth</em>etic data. Computer
+          scientists build the generators; social scientists, historians, and philosophers
+          interrogate what those generators do to knowledge, representation, and accountability.
+          Neither perspective is sufficient on its own.
+        </p>
+
+        <h3 class="pt-4 text-xl font-semibold text-[color:var(--color-heading)]">What is synthetic data?</h3>
+        <p>
+          Synthetic data is data produced by an algorithm rather than collected from the world.
+          A model — often a neural network — is trained on real data and then asked to generate
+          new examples that look like the originals but are not. The technique is being used to
+          train AI systems, share information about sensitive populations without exposing them,
+          test software, and bridge gaps where real data is unavailable.
+        </p>
+
+        <h3 class="pt-4 text-xl font-semibold text-[color:var(--color-heading)]">Why is it useful?</h3>
+        <p>
+          Synthetic data lets researchers and institutions work with data that would otherwise be
+          impossible to share — clinical records, financial transactions, demographic minorities.
+          It can balance underrepresented groups, accelerate model development, and support
+          reproducible science.
+        </p>
+
+        <h3 class="pt-4 text-xl font-semibold text-[color:var(--color-heading)]">Why is it contested?</h3>
+        <p>
+          Synthetic data inherits the assumptions, gaps, and biases of the data that produced it.
+          When the originals undercount certain groups, the synthetic copies do too — sometimes
+          more so. When generators are opaque, downstream users cannot tell what they are
+          really working with. We study these dynamics and design ways to make them visible.
+        </p>
+
+        <h3 class="pt-4 text-xl font-semibold text-[color:var(--color-heading)]">How can society benefit?</h3>
+        <p>
+          When done well, synthetic data can protect privacy, broaden participation, and enable
+          research on questions previously locked behind data access barriers. Our work aims to
+          help society realise those benefits without absorbing the harms.
+        </p>
+      </div>
+
+      <aside class="reveal gradient-border h-fit p-6">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-[color:var(--color-accent-cyan)]">Lab Facts</h3>
+        <dl class="mt-4 space-y-4 text-sm">
+          <div>
+            <dt class="text-[color:var(--color-muted)]">Funding</dt>
+            <dd class="mt-1 text-[color:var(--color-heading)]">WASP-HS · Wallenberg Foundations</dd>
+          </div>
+          <div>
+            <dt class="text-[color:var(--color-muted)]">Universities</dt>
+            <dd class="mt-1 text-[color:var(--color-heading)]">Linköping · Södertörn · Uppsala · Lund</dd>
+          </div>
+          <div>
+            <dt class="text-[color:var(--color-muted)]">Disciplines</dt>
+            <dd class="mt-1 text-[color:var(--color-heading)]">CS · STS · History of Ideas · Gender Studies</dd>
+          </div>
+          <div>
+            <dt class="text-[color:var(--color-muted)]">Project page</dt>
+            <dd class="mt-1">
+              <a class="text-[color:var(--color-accent-cyan)] hover:underline" href="https://wasp-hs.org/synthetic-data-facts-representations-and-transparency/" target="_blank" rel="noopener">wasp-hs.org ↗</a>
+            </dd>
+          </div>
+        </dl>
+      </aside>
+    </div>
+  </section>
+</BaseLayout>

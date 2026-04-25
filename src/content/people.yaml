@@ -1,0 +1,64 @@
+- id: ericka-johnson
+  name: Ericka Johnson
+  role: Principal Investigator
+  affiliation: Linköping University
+  email: ericka.johnson@liu.se
+  group: pi
+  order: 1
+  bio: Lead investigator on the WASP-HS research environment exploring synthetic data, facts, representations, and transparency.
+
+- id: francis-lee
+  name: Francis Lee
+  role: Principal Investigator
+  affiliation: Södertörn University
+  email: francis.lee@sh.se
+  group: pi
+  order: 2
+  bio: Co-PI investigating the social and cultural dimensions of synthetic data and machine-learned knowledge.
+
+- id: ylva-soderfeldt
+  name: Ylva Söderfeldt
+  role: Principal Investigator
+  affiliation: Uppsala University
+  email: ylva.soderfeldt@idehist.uu.se
+  group: pi
+  order: 3
+  bio: Co-PI working at the intersection of history of ideas, medical knowledge, and synthetic data practices.
+
+- id: alicja-ostrowska
+  name: Alicja Ostrowska
+  role: Postdoctoral Researcher
+  affiliation: MIT · Linköping University · Södertörn University
+  group: researcher
+  order: 4
+
+- id: svea-kiesewetter
+  name: Svea Kiesewetter
+  role: Postdoctoral Researcher
+  affiliation: Södertörn University
+  group: researcher
+  order: 7
+
+- id: md-fahim-sikder
+  name: Md Fahim Sikder
+  role: Postdoctoral Researcher
+  affiliation: Linköping University
+  email: md.fahim.sikder@liu.se
+  group: researcher
+  order: 6
+
+- id: vera-danilova
+  name: Vera Danilova
+  role: Postdoctoral Researcher
+  affiliation: Uppsala University
+  group: researcher
+  order: 8
+
+- id: charlotte-hogberg
+  name: Charlotte Högberg
+  role: Postdoctoral Researcher
+  affiliation: Lund University
+  group: researcher
+  order: 5
+  links:
+    website: https://portal.research.lu.se/sv/persons/charlotte-h%C3%B6gberg

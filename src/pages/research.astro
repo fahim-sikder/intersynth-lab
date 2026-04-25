@@ -1,0 +1,19 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import ThemeCard from '../components/ThemeCard.astro';
+import { getCollection } from 'astro:content';
+const themes = await getCollection('themes');
+---
+<BaseLayout title="Research — InterSynth Lab">
+  <section class="container-page py-24">
+    <SectionHeading
+      eyebrow="Research"
+      title="Five interconnected themes."
+      subtitle="Our research programme spans technical, social, and humanistic questions about how synthetic data is made, used, and understood."
+    />
+    <div class="mt-12 grid gap-6 md:grid-cols-2">
+      {themes.map((t, i) => <ThemeCard title={t.data.title} summary={t.data.summary} index={i} />)}
+    </div>
+  </section>
+</BaseLayout>

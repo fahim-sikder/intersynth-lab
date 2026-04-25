@@ -1,0 +1,25 @@
+---
+interface Props {
+  title: string;
+  summary: string;
+  status?: string;
+  themes?: string[];
+  href?: string;
+}
+const { title, summary, status = 'active', themes = [], href } = Astro.props;
+const Wrapper = href ? 'a' : 'div';
+---
+<Wrapper {...(href ? { href } : {})} class="reveal gradient-border glass-hover block p-6">
+  <div class="flex items-center justify-between">
+    <span class="chip">
+      <span class:list={[
+        'inline-block h-1.5 w-1.5 rounded-full',
+        status === 'active' ? 'bg-emerald-400' : status === 'completed' ? 'bg-zinc-400' : 'bg-amber-400',
+      ]}></span>
+      {status}
+    </span>
+    {themes.length > 0 && <span class="font-mono text-[10px] uppercase tracking-widest text-[color:var(--color-muted)]">{themes.join(' · ')}</span>}
+  </div>
+  <h3 class="mt-4 text-xl font-semibold leading-tight">{title}</h3>
+  <p class="mt-3 text-sm text-[color:var(--color-muted)]">{summary}</p>
+</Wrapper>

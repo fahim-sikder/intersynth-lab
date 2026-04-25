@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+import PersonCard from '../components/PersonCard.astro';
+import { getCollection } from 'astro:content';
+
+const people = (await getCollection('people')).sort((a, b) => a.data.order - b.data.order);
+const groups = [
+  { id: 'pi', label: 'Principal Investigators' },
+  { id: 'researcher', label: 'Researchers' },
+  { id: 'phd', label: 'PhD Researchers' },
+  { id: 'collaborator', label: 'Collaborators' },
+] as const;
+---
+<BaseLayout title="People — InterSynth Lab">
+  <section class="container-page py-24">
+    <SectionHeading eyebrow="People" title="The team behind InterSynth." subtitle="Researchers from Linköping, Södertörn, Uppsala, and Lund universities — across the social and computer sciences." />
+
+    {groups.map((g) => {
+      const list = people.filter((p) => p.data.group === g.id);
+      if (list.length === 0) return null;
+      return (
+        <div class="mt-16">
+          <h3 class="font-mono text-xs uppercase tracking-widest text-[color:var(--color-muted)]">{g.label}</h3>
+          <div class="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {list.map((p) => (
+              <PersonCard
+                id={p.data.id}
+                name={p.data.name}
+                role={p.data.role}
+                affiliation={p.data.affiliation}
+                email={p.data.email}
+                bio={p.data.bio}
+                group={p.data.group}
+              />
+            ))}
+          </div>
+        </div>
+      );
+    })}
+  </section>
+</BaseLayout>

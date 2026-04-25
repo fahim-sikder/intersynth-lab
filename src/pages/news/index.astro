@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import NewsCard from '../../components/NewsCard.astro';
+import { getCollection } from 'astro:content';
+const news = (await getCollection('news')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+<BaseLayout title="News — InterSynth Lab">
+  <section class="container-page py-24">
+    <SectionHeading eyebrow="News" title="What's happening at the lab." />
+    <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {news.map((n) => (
+        <NewsCard
+          title={n.data.title}
+          date={n.data.date}
+          excerpt={n.data.excerpt}
+          tags={n.data.tags}
+          href={`/news/${n.id}`}
+        />
+      ))}
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import EventCard from '../../components/EventCard.astro';
+import { getCollection } from 'astro:content';
+
+const all = (await getCollection('events')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const now = new Date();
+const upcoming = all.filter((e) => e.data.date >= now || e.data.status === 'upcoming');
+const past = all.filter((e) => e.data.date < now && e.data.status !== 'upcoming');
+---
+<BaseLayout title="Events — InterSynth Lab">
+  <section class="container-page py-24">
+    <SectionHeading eyebrow="Events" title="Talks, workshops, seminars." />
+
+    <div class="mt-12">
+      <h3 class="font-mono text-xs uppercase tracking-widest text-[color:var(--color-muted)]">Upcoming</h3>
+      <div class="mt-6 grid gap-6 md:grid-cols-2">
+        {upcoming.length === 0 && <p class="text-[color:var(--color-muted)]">No upcoming events scheduled — check back soon.</p>}
+        {upcoming.map((e) => (
+          <EventCard
+            title={e.data.title}
+            date={e.data.date}
+            location={e.data.location}
+            type={e.data.type}
+            link={e.data.link}
+            status="upcoming"
+            excerpt={e.data.excerpt}
+          />
+        ))}
+      </div>
+    </div>
+
+    {past.length > 0 && (
+      <div class="mt-16">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-[color:var(--color-muted)]">Past</h3>
+        <div class="mt-6 grid gap-6 md:grid-cols-2">
+          {past.map((e) => (
+            <EventCard
+              title={e.data.title}
+              date={e.data.date}
+              location={e.data.location}
+              type={e.data.type}
+              link={e.data.link}
+              status="past"
+              excerpt={e.data.excerpt}
+            />
+          ))}
+        </div>
+      </div>
+    )}
+  </section>
+</BaseLayout>
