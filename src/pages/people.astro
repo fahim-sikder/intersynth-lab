@@ -12,9 +12,9 @@ const groups = [
   { id: 'collaborator', label: 'Collaborators' },
 ] as const;
 ---
-<BaseLayout title="People — InterSynth Lab">
+<BaseLayout title="People - InterSynth Lab">
   <section class="container-page py-24">
-    <SectionHeading eyebrow="People" title="The team behind InterSynth." subtitle="Researchers from Linköping, Södertörn, Uppsala, and Lund universities — across the social and computer sciences." />
+    <SectionHeading eyebrow="People" title="The team behind InterSynth." subtitle="Researchers from Linköping, Södertörn, Uppsala, and Lund universities - across the social and computer sciences." />
 
     {groups.map((g) => {
       const list = people.filter((p) => p.data.group === g.id);

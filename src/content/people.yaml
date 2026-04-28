@@ -1,24 +1,24 @@
 - id: ericka-johnson
   name: Ericka Johnson
-  role: Principal Investigator
+  role: Research Leader
   affiliation: Linköping University
   email: ericka.johnson@liu.se
   group: pi
-  order: 1
-  bio: Lead investigator on the WASP-HS research environment exploring synthetic data, facts, representations, and transparency.
+  order: 2
+  bio: Co-PI investigating on the WASP-HS research environment exploring synthetic data, facts, representations, and transparency.
 
 - id: francis-lee
   name: Francis Lee
-  role: Principal Investigator
+  role: Research Leader
   affiliation: Södertörn University
   email: francis.lee@sh.se
   group: pi
-  order: 2
-  bio: Co-PI investigating the social and cultural dimensions of synthetic data and machine-learned knowledge.
+  order: 1
+  bio: Lead investigator on the social and cultural dimensions of synthetic data and machine-learned knowledge.
 
 - id: ylva-soderfeldt
   name: Ylva Söderfeldt
-  role: Principal Investigator
+  role: Research Leader
   affiliation: Uppsala University
   email: ylva.soderfeldt@idehist.uu.se
   group: pi
@@ -28,7 +28,8 @@
 - id: alicja-ostrowska
   name: Alicja Ostrowska
   role: Postdoctoral Researcher
-  affiliation: MIT · Linköping University · Södertörn University
+  affiliation: Massachusetts Institute of Technology · Södertörn University
+  email: alicja.ostrowska@sh.se
   group: researcher
   order: 4
 
@@ -36,8 +37,11 @@
   name: Svea Kiesewetter
   role: Postdoctoral Researcher
   affiliation: Södertörn University
+  email: svea.kiesewetter@sh.se
   group: researcher
   order: 7
+  links:
+    website: https://sveakiesewetter.com/
 
 - id: md-fahim-sikder
   name: Md Fahim Sikder
@@ -46,11 +50,14 @@
   email: md.fahim.sikder@liu.se
   group: researcher
   order: 6
+  links:
+    website: https://fahimsikder.com/
 
 - id: vera-danilova
   name: Vera Danilova
   role: Postdoctoral Researcher
   affiliation: Uppsala University
+  email: vera.danilova@idehist.uu.se
   group: researcher
   order: 8
 
@@ -58,6 +65,7 @@
   name: Charlotte Högberg
   role: Postdoctoral Researcher
   affiliation: Lund University
+  email: charlotte.hogberg@lth.lu.se
   group: researcher
   order: 5
   links:
