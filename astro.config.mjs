@@ -4,7 +4,7 @@ import sitemap from '@astrojs/sitemap';
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
-  site: 'https://intersynth.fahimsikder.com',
+  site: 'https://intersynth.ai',
   integrations: [mdx(), sitemap()],
   vite: {
     plugins: [tailwindcss()],
