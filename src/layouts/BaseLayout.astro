@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import { ClientRouter } from 'astro:transitions';
 
 interface Props {
   title?: string;
@@ -12,7 +13,7 @@ interface Props {
 const {
   title = 'InterSynth Lab — Synthetic Data: Facts, Representations, and Transparency',
   description = 'An interdisciplinary WASP-HS research lab investigating synthetic data — its facts, representations, and transparency — across the social and computer sciences.',
-  image = '/og-default.png',
+  image = '/og/default.svg',
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site).toString();
@@ -22,13 +23,17 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
   <head>
     <script is:inline>
       (function () {
-        try {
-          var stored = localStorage.getItem('theme');
-          var theme = stored === 'light' || stored === 'dark' ? stored : 'dark';
-          document.documentElement.dataset.theme = theme;
-        } catch (e) {
-          document.documentElement.dataset.theme = 'dark';
-        }
+        var apply = function () {
+          try {
+            var stored = localStorage.getItem('theme');
+            var theme = stored === 'light' || stored === 'dark' ? stored : 'dark';
+            document.documentElement.dataset.theme = theme;
+          } catch (e) {
+            document.documentElement.dataset.theme = 'dark';
+          }
+        };
+        apply();
+        document.addEventListener('astro:after-swap', apply);
       })();
     </script>
     <meta charset="UTF-8" />
@@ -50,6 +55,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
 
+    <ClientRouter />
+    <link rel="alternate" type="application/rss+xml" title="InterSynth Lab — News" href="/rss.xml" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -59,24 +66,28 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
   </head>
   <body>
     <Header />
-    <main class="relative z-10">
+    <main class="relative z-10" data-pagefind-body>
       <slot />
     </main>
     <Footer />
 
     <script>
-      const observer = new IntersectionObserver(
-        (entries) => {
-          for (const entry of entries) {
-            if (entry.isIntersecting) {
-              entry.target.classList.add('is-visible');
-              observer.unobserve(entry.target);
+      const initReveal = () => {
+        const observer = new IntersectionObserver(
+          (entries) => {
+            for (const entry of entries) {
+              if (entry.isIntersecting) {
+                entry.target.classList.add('is-visible');
+                observer.unobserve(entry.target);
+              }
             }
-          }
-        },
-        { threshold: 0.12 },
-      );
-      document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
+          },
+          { threshold: 0.12 },
+        );
+        document.querySelectorAll('.reveal:not(.is-visible)').forEach((el) => observer.observe(el));
+      };
+      initReveal();
+      document.addEventListener('astro:page-load', initReveal);
     </script>
   </body>
 </html>

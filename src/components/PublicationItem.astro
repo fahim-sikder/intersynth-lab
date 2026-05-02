@@ -1,4 +1,5 @@
 ---
+import { toBibTeX, toAPA } from '../lib/citations';
 interface Links {
   pdf?: string;
   doi?: string;
@@ -6,6 +7,7 @@ interface Links {
   arxiv?: string;
 }
 interface Props {
+  id: string;
   title: string;
   authors: string[];
   venue: string;
@@ -13,7 +15,10 @@ interface Props {
   type?: string;
   links?: Links;
 }
-const { title, authors, venue, year, type = 'paper', links = {} } = Astro.props;
+const { id, title, authors, venue, year, type = 'paper', links = {} } = Astro.props;
+const bibtex = toBibTeX({ id, title, authors, venue, year, type, links });
+const apa = toAPA({ id, title, authors, venue, year, type, links });
+const arxivId = links.arxiv?.match(/(\d{4}\.\d{4,6})/)?.[1];
 ---
 <article class="reveal flex flex-col gap-2 border-b border-[color:var(--color-border)] py-6 last:border-b-0 sm:flex-row sm:items-start sm:gap-6">
   <div class="font-mono text-sm text-[color:var(--color-muted)] sm:w-20 sm:shrink-0">
@@ -24,13 +29,140 @@ const { title, authors, venue, year, type = 'paper', links = {} } = Astro.props;
     <h3 class="text-base font-medium leading-snug text-[color:var(--color-heading)]">{title}</h3>
     <p class="mt-1 text-sm text-[color:var(--color-muted)]">{authors.join(', ')}</p>
     <p class="mt-1 text-sm italic text-[color:var(--color-muted)]">{venue}</p>
-    {(links.pdf || links.doi || links.code || links.arxiv) && (
-      <div class="mt-3 flex flex-wrap gap-2 text-xs">
-        {links.pdf && <a href={links.pdf} class="chip hover:text-[color:var(--color-heading)]">PDF</a>}
-        {links.doi && <a href={`https://doi.org/${links.doi}`} class="chip hover:text-[color:var(--color-heading)]">DOI</a>}
-        {links.arxiv && <a href={links.arxiv} class="chip hover:text-[color:var(--color-heading)]">arXiv</a>}
-        {links.code && <a href={links.code} class="chip hover:text-[color:var(--color-heading)]">Code</a>}
-      </div>
-    )}
+    <div class="mt-3 flex flex-wrap gap-2 text-xs">
+      {links.pdf && <a href={links.pdf} class="chip hover:text-[color:var(--color-heading)]">PDF</a>}
+      {links.doi && (
+        <a href={`https://doi.org/${links.doi}`} class="chip pub-badge pub-badge-doi" title={`DOI: ${links.doi}`}>
+          <span class="pub-badge-label">DOI</span>
+          <span class="pub-badge-value">{links.doi}</span>
+        </a>
+      )}
+      {links.arxiv && (
+        <a href={links.arxiv} class="chip pub-badge pub-badge-arxiv" title={links.arxiv}>
+          <span class="pub-badge-label">arXiv</span>
+          {arxivId && <span class="pub-badge-value">{arxivId}</span>}
+        </a>
+      )}
+      {links.code && <a href={links.code} class="chip hover:text-[color:var(--color-heading)]">Code</a>}
+      <a href={`/publications/${id}.bib`} class="chip hover:text-[color:var(--color-heading)]" download>.bib</a>
+      <button
+        type="button"
+        class="chip pub-cite hover:text-[color:var(--color-heading)]"
+        data-bibtex={bibtex}
+        data-apa={apa}
+      >Cite</button>
+    </div>
   </div>
 </article>
+
+<style is:global>
+  .pub-badge {
+    gap: 0.45rem;
+    padding-left: 0;
+    overflow: hidden;
+  }
+  .pub-badge .pub-badge-label {
+    background: rgba(34, 211, 238, 0.18);
+    color: var(--color-accent-cyan);
+    padding: 0.2rem 0.5rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+  }
+  .pub-badge-arxiv .pub-badge-label {
+    background: rgba(168, 85, 247, 0.18);
+    color: var(--color-accent-violet);
+  }
+  .pub-badge .pub-badge-value {
+    padding-right: 0.6rem;
+    text-transform: none;
+    font-size: 0.7rem;
+    color: var(--color-text);
+  }
+</style>
+
+<script>
+  const wireCite = () => {
+    document.querySelectorAll<HTMLButtonElement>('.pub-cite').forEach((btn) => {
+      if ((btn as any).__wired) return;
+      (btn as any).__wired = true;
+      btn.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const existing = document.getElementById('cite-popover');
+        existing?.remove();
+        const bib = btn.dataset.bibtex ?? '';
+        const apa = btn.dataset.apa ?? '';
+        const pop = document.createElement('div');
+        pop.id = 'cite-popover';
+        pop.innerHTML = `
+          <div class="cite-card">
+            <div class="cite-tabs">
+              <button data-tab="bibtex" class="active">BibTeX</button>
+              <button data-tab="apa">APA</button>
+              <button class="cite-close" aria-label="Close">×</button>
+            </div>
+            <pre class="cite-body" data-pane="bibtex">${bib.replace(/[<&]/g, (c) => ({'<':'&lt;','&':'&amp;'}[c]!))}</pre>
+            <pre class="cite-body hidden" data-pane="apa">${apa.replace(/[<&]/g, (c) => ({'<':'&lt;','&':'&amp;'}[c]!))}</pre>
+            <button class="cite-copy">Copy</button>
+          </div>
+        `;
+        document.body.appendChild(pop);
+        const close = () => pop.remove();
+        pop.querySelector('.cite-close')?.addEventListener('click', close);
+        pop.addEventListener('click', (ev) => { if (ev.target === pop) close(); });
+        pop.querySelectorAll<HTMLButtonElement>('.cite-tabs button[data-tab]').forEach((tab) => {
+          tab.addEventListener('click', () => {
+            pop.querySelectorAll('.cite-tabs button[data-tab]').forEach((t) => t.classList.remove('active'));
+            tab.classList.add('active');
+            pop.querySelectorAll<HTMLElement>('.cite-body').forEach((b) => {
+              b.classList.toggle('hidden', b.dataset.pane !== tab.dataset.tab);
+            });
+          });
+        });
+        pop.querySelector<HTMLButtonElement>('.cite-copy')?.addEventListener('click', async (ev) => {
+          const active = pop.querySelector<HTMLElement>('.cite-body:not(.hidden)');
+          if (!active) return;
+          await navigator.clipboard.writeText(active.textContent ?? '');
+          (ev.currentTarget as HTMLButtonElement).textContent = 'Copied';
+          setTimeout(() => { (ev.currentTarget as HTMLButtonElement).textContent = 'Copy'; }, 1200);
+        });
+      });
+    });
+  };
+  wireCite();
+  document.addEventListener('astro:page-load', wireCite);
+</script>
+
+<style is:global>
+  #cite-popover {
+    position: fixed; inset: 0; z-index: 100;
+    background: rgba(0,0,0,0.55); display: grid; place-items: center;
+    backdrop-filter: blur(4px);
+  }
+  #cite-popover .cite-card {
+    width: min(640px, 92vw);
+    background: var(--color-surface); border: 1px solid var(--color-border);
+    border-radius: 1rem; padding: 1rem 1.25rem 1.25rem;
+  }
+  #cite-popover .cite-tabs { display: flex; gap: 0.5rem; align-items: center; }
+  #cite-popover .cite-tabs button {
+    padding: 0.35rem 0.8rem; border-radius: 9999px; font-family: var(--font-mono);
+    font-size: 0.75rem; letter-spacing: 0.05em; text-transform: uppercase;
+    border: 1px solid var(--color-border); color: var(--color-muted);
+  }
+  #cite-popover .cite-tabs button.active { color: var(--color-heading); border-color: var(--color-accent-cyan); }
+  #cite-popover .cite-tabs .cite-close {
+    margin-left: auto; border: none; background: transparent; font-size: 1.5rem;
+    line-height: 1; color: var(--color-muted); cursor: pointer;
+  }
+  #cite-popover .cite-body {
+    margin-top: 0.75rem; padding: 0.9rem; max-height: 50vh; overflow: auto;
+    background: rgba(255,255,255,0.03); border: 1px solid var(--color-border);
+    border-radius: 0.5rem; font-family: var(--font-mono); font-size: 0.78rem;
+    color: var(--color-text); white-space: pre-wrap; word-break: break-word;
+  }
+  #cite-popover .cite-copy {
+    margin-top: 0.75rem; padding: 0.45rem 1rem; border-radius: 9999px;
+    background: linear-gradient(120deg, #22d3ee, #a855f7); color: #0a0a12;
+    font-weight: 500; font-size: 0.85rem;
+  }
+</style>

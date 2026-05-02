@@ -35,16 +35,27 @@ const orcidUrl = links.orcid
   ? (links.orcid.startsWith('http') ? links.orcid : `https://orcid.org/${links.orcid}`)
   : undefined;
 ---
-<BaseLayout title={`${person.name} — InterSynth Lab`} description={person.bio ?? `${person.role} at ${person.affiliation}.`}>
+<BaseLayout title={`${person.name} — InterSynth Lab`} description={person.bio ?? `${person.role} at ${person.affiliation}.`} image={`/og/people/${person.id}.svg`}>
   <section class="container-page py-24">
     <a href="/people" class="text-xs font-mono uppercase tracking-widest text-[color:var(--color-muted)] hover:text-[color:var(--color-heading)]">← People</a>
 
     <div class="mt-10 grid gap-10 md:grid-cols-[auto_1fr] md:items-start">
-      <div
-        class="grid h-32 w-32 shrink-0 place-items-center rounded-full text-3xl font-semibold text-white"
-        style="background: linear-gradient(135deg, rgba(34,211,238,0.35), rgba(168,85,247,0.45));"
-        aria-hidden="true"
-      >{initials}</div>
+      {person.photo ? (
+        <img
+          src={person.photo}
+          alt={person.name}
+          loading="eager"
+          decoding="async"
+          class="h-32 w-32 shrink-0 rounded-full object-cover"
+          style="border: 1px solid var(--color-border);"
+        />
+      ) : (
+        <div
+          class="grid h-32 w-32 shrink-0 place-items-center rounded-full text-3xl font-semibold text-white"
+          style="background: linear-gradient(135deg, rgba(34,211,238,0.35), rgba(168,85,247,0.45));"
+          aria-hidden="true"
+        >{initials}</div>
+      )}
 
       <div>
         <h1 class="text-4xl font-semibold tracking-tight sm:text-5xl">{person.name}</h1>
@@ -91,6 +102,7 @@ const orcidUrl = links.orcid
         <div class="mt-3">
           {pubs.map((p) => (
             <PublicationItem
+              id={p.id}
               title={p.title}
               authors={p.authors}
               venue={p.venue}

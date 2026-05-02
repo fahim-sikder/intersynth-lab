@@ -13,7 +13,7 @@ const themes = await getCollection('themes');
       subtitle="Our research programme spans technical, social, and humanistic questions about how synthetic data is made, used, and understood."
     />
     <div class="mt-12 grid gap-6 md:grid-cols-2">
-      {themes.map((t, i) => <ThemeCard title={t.data.title} summary={t.data.summary} index={i} />)}
+      {themes.map((t, i) => <ThemeCard id={t.data.id} title={t.data.title} summary={t.data.summary} index={i} />)}
     </div>
   </section>
 </BaseLayout>

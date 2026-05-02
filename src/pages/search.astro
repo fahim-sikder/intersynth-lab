@@ -1,0 +1,93 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SectionHeading from '../components/SectionHeading.astro';
+---
+<BaseLayout title="Search — InterSynth Lab" description="Search the InterSynth Lab site.">
+  <section class="container-page py-24">
+    <SectionHeading eyebrow="Search" title="Find anything across the site." subtitle="People, projects, publications, news, events." />
+
+    <div class="mt-10 max-w-2xl">
+      <input
+        id="search-input"
+        type="search"
+        placeholder="Type to search…"
+        autocomplete="off"
+        class="w-full rounded-2xl border border-[color:var(--color-border)] bg-[color:var(--color-surface-1)] px-5 py-4 text-base text-[color:var(--color-heading)] placeholder:text-[color:var(--color-muted)] outline-none focus:border-[color:var(--color-accent-cyan)] transition-colors"
+      />
+      <p id="search-status" class="mt-3 text-xs font-mono uppercase tracking-widest text-[color:var(--color-muted)]"></p>
+      <ol id="search-results" class="mt-6 flex flex-col gap-4"></ol>
+    </div>
+  </section>
+</BaseLayout>
+
+<style is:global>
+  #search-results li {
+    list-style: none;
+    border: 1px solid var(--color-border);
+    border-radius: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--color-surface-1);
+  }
+  #search-results a { color: var(--color-heading); font-weight: 500; }
+  #search-results a:hover { color: var(--color-accent-cyan); }
+  #search-results .excerpt { margin-top: 0.4rem; font-size: 0.875rem; color: var(--color-muted); line-height: 1.55; }
+  #search-results mark { background: rgba(34,211,238,0.18); color: inherit; padding: 0 2px; border-radius: 2px; }
+</style>
+
+<script>
+  const init = async () => {
+    const input = document.getElementById('search-input') as HTMLInputElement | null;
+    const results = document.getElementById('search-results');
+    const status = document.getElementById('search-status');
+    if (!input || !results || !status) return;
+    if ((input as any).__wired) return;
+    (input as any).__wired = true;
+
+    let pagefind: any = null;
+    const load = async () => {
+      if (pagefind) return pagefind;
+      try {
+        pagefind = await import(/* @vite-ignore */ new URL('/pagefind/pagefind.js', window.location.origin).toString());
+        await pagefind.options({ excerptLength: 30 });
+      } catch (e) {
+        status.textContent = 'Search index not built yet. Run a production build.';
+      }
+      return pagefind;
+    };
+
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    input.addEventListener('input', () => {
+      const q = input.value.trim();
+      if (timer) clearTimeout(timer);
+      if (!q) {
+        results.innerHTML = '';
+        status.textContent = '';
+        return;
+      }
+      timer = setTimeout(async () => {
+        const pf = await load();
+        if (!pf) return;
+        status.textContent = 'Searching…';
+        const search = await pf.search(q);
+        const out = await Promise.all(search.results.slice(0, 10).map((r: any) => r.data()));
+        if (out.length === 0) {
+          status.textContent = `No results for "${q}".`;
+          results.innerHTML = '';
+          return;
+        }
+        status.textContent = `${out.length} result${out.length === 1 ? '' : 's'}`;
+        results.innerHTML = out
+          .map(
+            (d) => `
+            <li>
+              <a href="${d.url}">${d.meta?.title ?? d.url}</a>
+              <p class="excerpt">${d.excerpt}</p>
+            </li>`,
+          )
+          .join('');
+      }, 120);
+    });
+  };
+  init();
+  document.addEventListener('astro:page-load', init);
+</script>

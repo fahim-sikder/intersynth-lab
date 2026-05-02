@@ -8,8 +8,17 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings, remarkPluginFrontmatter } = await render(entry);
 ---
-<PostLayout title={entry.data.title} date={entry.data.date} description={entry.data.excerpt} backHref="/news" backLabel="Back to News">
+<PostLayout
+  title={entry.data.title}
+  date={entry.data.date}
+  description={entry.data.excerpt}
+  backHref="/news"
+  backLabel="Back to News"
+  minutes={remarkPluginFrontmatter?.minutes}
+  headings={headings}
+  image={`/og/news/${entry.id}.svg`}
+>
   <Content />
 </PostLayout>

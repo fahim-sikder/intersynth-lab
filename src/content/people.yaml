@@ -3,6 +3,7 @@
   role: Research Leader
   affiliation: Linköping University
   email: ericka.johnson@liu.se
+  photo: /people/ericka-johnson.jpeg
   group: pi
   order: 2
   bio: Co-PI investigating on the WASP-HS research environment exploring synthetic data, facts, representations, and transparency.
@@ -12,6 +13,7 @@
   role: Research Leader
   affiliation: Södertörn University
   email: francis.lee@sh.se
+  photo: /people/francis-lee.jpg
   group: pi
   order: 1
   bio: Lead investigator on the social and cultural dimensions of synthetic data and machine-learned knowledge.
@@ -21,6 +23,7 @@
   role: Research Leader
   affiliation: Uppsala University
   email: ylva.soderfeldt@idehist.uu.se
+  photo: /people/ylva-soderfeldt.jpg
   group: pi
   order: 3
   bio: Co-PI working at the intersection of history of ideas, medical knowledge, and synthetic data practices.
@@ -38,6 +41,7 @@
   role: Postdoctoral Researcher
   affiliation: Södertörn University
   email: svea.kiesewetter@sh.se
+  photo: /people/svea-kiesewetter.webp
   group: researcher
   order: 7
   links:
@@ -48,6 +52,7 @@
   role: Postdoctoral Researcher
   affiliation: Linköping University
   email: md.fahim.sikder@liu.se
+  photo: /people/md-fahim-sikder.jpg
   group: researcher
   order: 6
   links:
@@ -66,6 +71,7 @@
   role: Postdoctoral Researcher
   affiliation: Lund University
   email: charlotte.hogberg@lth.lu.se
+  photo: /people/charlotte-hogberg.jpeg
   group: researcher
   order: 5
   links:

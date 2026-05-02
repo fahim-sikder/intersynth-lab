@@ -8,6 +8,14 @@ const news = (await getCollection('news')).sort((a, b) => b.data.date.valueOf() 
 <BaseLayout title="News — InterSynth Lab">
   <section class="container-page py-24">
     <SectionHeading eyebrow="News" title="What's happening at the lab." />
+    <div class="mt-4">
+      <a href="/rss.xml" class="chip text-xs hover:text-[color:var(--color-heading)]">
+        <svg viewBox="0 0 24 24" width="12" height="12" fill="currentColor" aria-hidden="true" class="inline align-[-2px] mr-1">
+          <path d="M4 11a9 9 0 0 1 9 9h-3a6 6 0 0 0-6-6v-3zm0-7a16 16 0 0 1 16 16h-3A13 13 0 0 0 4 7V4zm2.5 13a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5z"/>
+        </svg>
+        RSS feed
+      </a>
+    </div>
     <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {news.map((n) => (
         <NewsCard

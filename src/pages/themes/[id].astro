@@ -1,0 +1,82 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import SectionHeading from '../../components/SectionHeading.astro';
+import ProjectCard from '../../components/ProjectCard.astro';
+import PublicationItem from '../../components/PublicationItem.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const themes = await getCollection('themes');
+  const projects = await getCollection('projects');
+  const pubs = await getCollection('publications');
+
+  return themes.map((t) => {
+    const themeId = t.data.id;
+    const matchedProjects = projects
+      .filter((p) => p.data.themes.includes(themeId))
+      .sort((a, b) => a.data.order - b.data.order);
+    const matchedPubs = pubs
+      .filter((p) => {
+        const titleHay = `${p.data.title} ${p.data.abstract ?? ''} ${p.data.venue}`.toLowerCase();
+        return titleHay.includes(themeId);
+      })
+      .sort((a, b) => b.data.year - a.data.year);
+    return {
+      params: { id: themeId },
+      props: {
+        theme: t.data,
+        projects: matchedProjects.map((p) => ({ id: p.id, ...p.data })),
+        pubs: matchedPubs.map((p) => p.data),
+      },
+    };
+  });
+}
+
+const { theme, projects, pubs } = Astro.props;
+---
+<BaseLayout title={`${theme.title} — InterSynth Lab`} description={theme.summary} image={`/og/themes/${theme.id}.svg`}>
+  <section class="container-page py-24">
+    <a href="/research" class="text-xs font-mono uppercase tracking-widest text-[color:var(--color-muted)] hover:text-[color:var(--color-heading)]">← Research themes</a>
+    <SectionHeading eyebrow={`Theme · ${theme.id}`} title={theme.title} subtitle={theme.summary} />
+
+    {projects.length > 0 && (
+      <div class="mt-16">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-[color:var(--color-muted)]">Projects</h3>
+        <div class="mt-6 grid gap-6 md:grid-cols-2">
+          {projects.map((p) => (
+            <ProjectCard
+              title={p.title}
+              summary={p.summary}
+              status={p.status}
+              themes={p.themes}
+              href={`/projects#${p.id}`}
+            />
+          ))}
+        </div>
+      </div>
+    )}
+
+    {pubs.length > 0 && (
+      <div class="mt-16">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-[color:var(--color-muted)]">Related publications</h3>
+        <div class="mt-3">
+          {pubs.map((p) => (
+            <PublicationItem
+              id={p.id}
+              title={p.title}
+              authors={p.authors}
+              venue={p.venue}
+              year={p.year}
+              type={p.type}
+              links={p.links}
+            />
+          ))}
+        </div>
+      </div>
+    )}
+
+    {projects.length === 0 && pubs.length === 0 && (
+      <p class="mt-16 text-[color:var(--color-muted)]">No projects or publications tagged with this theme yet.</p>
+    )}
+  </section>
+</BaseLayout>

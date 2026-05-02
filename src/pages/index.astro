@@ -46,7 +46,7 @@ const news = newsAll.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf(
   <section class="container-page py-24">
     <SectionHeading eyebrow="Research" title="Five themes, one question." subtitle="What does it take for synthetic data to be trustworthy?" />
     <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {themes.map((t, i) => <ThemeCard title={t.data.title} summary={t.data.summary} index={i} />)}
+      {themes.map((t, i) => <ThemeCard id={t.data.id} title={t.data.title} summary={t.data.summary} index={i} />)}
     </div>
     <div class="mt-10"><a href="/research" class="btn btn-ghost">Explore the research →</a></div>
   </section>
@@ -57,12 +57,15 @@ const news = newsAll.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf(
     <div class="mt-10 grid gap-6 md:grid-cols-3">
       {pis.map((p) => (
         <PersonCard
+          id={p.data.id}
           name={p.data.name}
           role={p.data.role}
           affiliation={p.data.affiliation}
           email={p.data.email}
           bio={p.data.bio}
           group={p.data.group}
+          photo={p.data.photo}
+          links={p.data.links}
         />
       ))}
     </div>

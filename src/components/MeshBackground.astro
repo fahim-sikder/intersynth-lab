@@ -30,21 +30,48 @@
     mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 30%, transparent 75%);
     -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 30%, transparent 75%);
   }
+  :root[data-theme="light"] .hero-grid {
+    background-image:
+      linear-gradient(rgba(124, 58, 237, 0.18) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(6, 182, 212, 0.18) 1px, transparent 1px);
+  }
+  :root[data-theme="light"] .hero-mesh canvas {
+    opacity: 1;
+  }
 </style>
 
 <script>
+  type Pt = { x: number; y: number; vx: number; vy: number };
+  type MeshState = {
+    canvas: HTMLCanvasElement;
+    rafId: number;
+    onResize: () => void;
+  };
   const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const canvas = document.getElementById('mesh-canvas') as HTMLCanvasElement | null;
-  if (canvas && !reduce) {
+  let current: MeshState | null = null;
+
+  const stop = () => {
+    if (!current) return;
+    cancelAnimationFrame(current.rafId);
+    window.removeEventListener('resize', current.onResize);
+    current = null;
+  };
+
+  const start = () => {
+    const canvas = document.getElementById('mesh-canvas') as HTMLCanvasElement | null;
+    if (!canvas || reduce) return;
+    if (current && current.canvas === canvas) return;
+    stop();
+
     const ctx = canvas.getContext('2d')!;
-    let w = 0, h = 0, dpr = Math.min(window.devicePixelRatio || 1, 2);
-    type Pt = { x: number; y: number; vx: number; vy: number };
+    let w = 0, h = 0;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
     let pts: Pt[] = [];
 
-    function resize() {
-      const r = canvas!.getBoundingClientRect();
+    const resize = () => {
+      const r = canvas.getBoundingClientRect();
       w = r.width; h = r.height;
-      canvas!.width = w * dpr; canvas!.height = h * dpr;
+      canvas.width = w * dpr; canvas.height = h * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       const count = Math.max(40, Math.min(90, Math.floor((w * h) / 18000)));
       pts = Array.from({ length: count }, () => ({
@@ -53,9 +80,17 @@
         vx: (Math.random() - 0.5) * 0.25,
         vy: (Math.random() - 0.5) * 0.25,
       }));
-    }
+    };
 
-    function tick() {
+    const tick = () => {
+      const light = document.documentElement.dataset.theme === 'light';
+      const edgeAlphaScale = light ? 0.95 : 0.35;
+      const edgeWidth = light ? 0.9 : 0.7;
+      const cyan = light ? '6, 182, 212' : '34, 211, 238';
+      const violet = light ? '124, 58, 237' : '168, 85, 247';
+      const dotColor = light ? 'rgba(15, 15, 26, 0.65)' : 'rgba(255, 255, 255, 0.6)';
+      const dotRadius = light ? 1.5 : 1.2;
+
       ctx.clearRect(0, 0, w, h);
       for (const p of pts) {
         p.x += p.vx; p.y += p.vy;
@@ -69,12 +104,12 @@
           const dx = a.x - b.x, dy = a.y - b.y;
           const d = Math.hypot(dx, dy);
           if (d < maxDist) {
-            const alpha = (1 - d / maxDist) * 0.35;
+            const alpha = (1 - d / maxDist) * edgeAlphaScale;
             const grad = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
-            grad.addColorStop(0, `rgba(34, 211, 238, ${alpha})`);
-            grad.addColorStop(1, `rgba(168, 85, 247, ${alpha})`);
+            grad.addColorStop(0, `rgba(${cyan}, ${alpha})`);
+            grad.addColorStop(1, `rgba(${violet}, ${alpha})`);
             ctx.strokeStyle = grad;
-            ctx.lineWidth = 0.7;
+            ctx.lineWidth = edgeWidth;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
@@ -83,15 +118,21 @@
         }
       }
       for (const p of pts) {
-        ctx.fillStyle = 'rgba(255,255,255,0.6)';
+        ctx.fillStyle = dotColor;
         ctx.beginPath();
-        ctx.arc(p.x, p.y, 1.2, 0, Math.PI * 2);
+        ctx.arc(p.x, p.y, dotRadius, 0, Math.PI * 2);
         ctx.fill();
       }
-      requestAnimationFrame(tick);
-    }
+      if (current) current.rafId = requestAnimationFrame(tick);
+    };
+
     resize();
     window.addEventListener('resize', resize);
-    tick();
-  }
+    current = { canvas, rafId: 0, onResize: resize };
+    current.rafId = requestAnimationFrame(tick);
+  };
+
+  start();
+  document.addEventListener('astro:page-load', start);
+  document.addEventListener('astro:before-swap', stop);
 </script>

@@ -1,4 +1,10 @@
 ---
+interface Links {
+  website?: string;
+  scholar?: string;
+  github?: string;
+  orcid?: string;
+}
 interface Props {
   id?: string;
   name: string;
@@ -7,8 +13,13 @@ interface Props {
   email?: string;
   bio?: string;
   group?: string;
+  photo?: string;
+  links?: Links;
 }
-const { id, name, role, affiliation, email, bio, group } = Astro.props;
+const { id, name, role, affiliation, email, bio, group, photo, links = {} } = Astro.props;
+const orcidUrl = links.orcid
+  ? (links.orcid.startsWith('http') ? links.orcid : `https://orcid.org/${links.orcid}`)
+  : undefined;
 const initials = name
   .split(/\s+/)
   .map((w) => w[0])
@@ -20,11 +31,22 @@ const href = id ? `/people/${id}` : undefined;
 ---
 <article class="reveal gradient-border glass-hover p-6">
   <div class="flex items-center gap-4">
-    <div
-      class="grid h-14 w-14 shrink-0 place-items-center rounded-full text-lg font-semibold text-white"
-      style="background: linear-gradient(135deg, rgba(34,211,238,0.35), rgba(168,85,247,0.45));"
-      aria-hidden="true"
-    >{initials}</div>
+    {photo ? (
+      <img
+        src={photo}
+        alt={name}
+        loading="lazy"
+        decoding="async"
+        class="h-14 w-14 shrink-0 rounded-full object-cover"
+        style="border: 1px solid var(--color-border);"
+      />
+    ) : (
+      <div
+        class="grid h-14 w-14 shrink-0 place-items-center rounded-full text-lg font-semibold text-white"
+        style="background: linear-gradient(135deg, rgba(34,211,238,0.35), rgba(168,85,247,0.45));"
+        aria-hidden="true"
+      >{initials}</div>
+    )}
     <div>
       <h3 class="text-lg font-semibold leading-tight">
         {href ? <a href={href} class="hover:text-[color:var(--color-accent-cyan)]">{name}</a> : name}
@@ -46,6 +68,38 @@ const href = id ? `/people/${id}` : undefined;
       </a>
     )}
   </div>
+  {(links.website || links.scholar || links.github || orcidUrl) && (
+    <div class="mt-3 flex items-center gap-2 text-[color:var(--color-muted)]">
+      {links.website && (
+        <a href={links.website} target="_blank" rel="noopener" aria-label="Website" title="Website" class="hover:text-[color:var(--color-heading)] transition-colors">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15 15 0 0 1 0 20"/><path d="M12 2a15 15 0 0 0 0 20"/>
+          </svg>
+        </a>
+      )}
+      {links.scholar && (
+        <a href={links.scholar} target="_blank" rel="noopener" aria-label="Google Scholar" title="Google Scholar" class="hover:text-[color:var(--color-heading)] transition-colors">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+            <path d="M5.242 13.769L0.5 9.5 12 1l11.5 8.5-4.742 4.269C17.991 11.232 15.232 9.5 12 9.5s-5.991 1.732-6.758 4.269zM12 10.5a6 6 0 1 0 0 12 6 6 0 0 0 0-12z"/>
+          </svg>
+        </a>
+      )}
+      {links.github && (
+        <a href={links.github} target="_blank" rel="noopener" aria-label="GitHub" title="GitHub" class="hover:text-[color:var(--color-heading)] transition-colors">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+            <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-1.96c-3.2.7-3.87-1.54-3.87-1.54-.52-1.34-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.77 2.7 1.26 3.36.97.1-.75.4-1.27.73-1.56-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.28 1.18-3.09-.12-.29-.51-1.46.11-3.04 0 0 .96-.31 3.15 1.18a10.97 10.97 0 0 1 5.74 0c2.19-1.49 3.15-1.18 3.15-1.18.62 1.58.23 2.75.11 3.04.74.81 1.18 1.83 1.18 3.09 0 4.42-2.7 5.39-5.27 5.68.41.36.78 1.07.78 2.16v3.2c0 .31.21.67.8.55C20.21 21.39 23.5 17.08 23.5 12 23.5 5.65 18.35.5 12 .5z"/>
+          </svg>
+        </a>
+      )}
+      {orcidUrl && (
+        <a href={orcidUrl} target="_blank" rel="noopener" aria-label="ORCID" title="ORCID" class="hover:text-[color:var(--color-heading)] transition-colors">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+            <path d="M12 0C5.37 0 0 5.37 0 12s5.37 12 12 12 12-5.37 12-12S18.63 0 12 0zM7.37 18.63h-1.7V7.37h1.7v11.26zm-.85-12.7a1.07 1.07 0 1 1 0-2.14 1.07 1.07 0 0 1 0 2.14zm12.21 12.7h-4.85V7.37h4.66c4.42 0 6.45 3.16 6.45 5.63 0 2.69-2.1 5.63-6.26 5.63zm-.19-9.6h-2.96v7.95h2.86c2.7 0 4.28-1.94 4.28-3.97 0-1.85-1.18-3.98-4.18-3.98z"/>
+          </svg>
+        </a>
+      )}
+    </div>
+  )}
   {group === 'pi' && (
     <div class="mt-4 inline-flex"><span class="chip">Principal Investigator</span></div>
   )}

@@ -47,6 +47,17 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
     </nav>
 
     <div class="flex items-center gap-2">
+      <a
+        href="/search"
+        aria-label="Search"
+        title="Search"
+        class="rounded-full border border-[color:var(--color-border)] p-2 text-[color:var(--color-muted)] hover:text-[color:var(--color-heading)] transition-colors"
+      >
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="7"/>
+          <path d="m20 20-3.5-3.5"/>
+        </svg>
+      </a>
       <button
         id="theme-toggle"
         type="button"
@@ -84,27 +95,31 @@ const isActive = (href: string) => (href === '/' ? path === '/' : path.startsWit
 </header>
 
 <script>
-  const btn = document.getElementById('nav-toggle');
-  const menu = document.getElementById('mobile-nav');
-  btn?.addEventListener('click', () => {
-    if (!menu) return;
-    const open = menu.classList.toggle('hidden');
-    btn.setAttribute('aria-expanded', String(!open));
-  });
+  const wireHeader = () => {
+    const btn = document.getElementById('nav-toggle');
+    const menu = document.getElementById('mobile-nav');
+    btn?.addEventListener('click', () => {
+      if (!menu) return;
+      const open = menu.classList.toggle('hidden');
+      btn.setAttribute('aria-expanded', String(!open));
+    });
 
-  const themeBtn = document.getElementById('theme-toggle');
-  const moonIcon = document.getElementById('theme-icon-moon');
-  const sunIcon = document.getElementById('theme-icon-sun');
-  const syncThemeIcons = () => {
-    const light = document.documentElement.dataset.theme === 'light';
-    moonIcon?.classList.toggle('hidden', light);
-    sunIcon?.classList.toggle('hidden', !light);
-  };
-  syncThemeIcons();
-  themeBtn?.addEventListener('click', () => {
-    const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
-    document.documentElement.dataset.theme = next;
-    try { localStorage.setItem('theme', next); } catch {}
+    const themeBtn = document.getElementById('theme-toggle');
+    const moonIcon = document.getElementById('theme-icon-moon');
+    const sunIcon = document.getElementById('theme-icon-sun');
+    const syncThemeIcons = () => {
+      const light = document.documentElement.dataset.theme === 'light';
+      moonIcon?.classList.toggle('hidden', light);
+      sunIcon?.classList.toggle('hidden', !light);
+    };
     syncThemeIcons();
-  });
+    themeBtn?.addEventListener('click', () => {
+      const next = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+      document.documentElement.dataset.theme = next;
+      try { localStorage.setItem('theme', next); } catch {}
+      syncThemeIcons();
+    });
+  };
+  wireHeader();
+  document.addEventListener('astro:page-load', wireHeader);
 </script>
