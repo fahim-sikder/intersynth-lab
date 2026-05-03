@@ -88,6 +88,37 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
       };
       initReveal();
       document.addEventListener('astro:page-load', initReveal);
+
+      // Re-decode Cloudflare-obfuscated emails after view-transition swaps,
+      // because cf's email-decode.min.js only runs on full page load.
+      const decodeCfEmails = () => {
+        const decode = (encoded) => {
+          const r = parseInt(encoded.slice(0, 2), 16);
+          let out = '';
+          for (let i = 2; i < encoded.length; i += 2) {
+            out += String.fromCharCode(parseInt(encoded.slice(i, i + 2), 16) ^ r);
+          }
+          return out;
+        };
+        document.querySelectorAll('span.__cf_email__[data-cfemail]').forEach((span) => {
+          try {
+            const email = decode(span.getAttribute('data-cfemail'));
+            const text = document.createTextNode(email);
+            span.replaceWith(text);
+            const link = text.parentElement?.closest('a[href*="/cdn-cgi/l/email-protection"]');
+            if (link) link.setAttribute('href', `mailto:${email}`);
+          } catch {}
+        });
+        document.querySelectorAll('a[href*="/cdn-cgi/l/email-protection#"]').forEach((a) => {
+          const href = a.getAttribute('href') || '';
+          const idx = href.indexOf('#');
+          if (idx < 0) return;
+          try {
+            a.setAttribute('href', `mailto:${decode(href.slice(idx + 1))}`);
+          } catch {}
+        });
+      };
+      document.addEventListener('astro:page-load', decodeCfEmails);
     </script>
   </body>
 </html>
