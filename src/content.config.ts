@@ -20,7 +20,6 @@ const events = defineCollection({
     location: z.string().optional(),
     type: z.enum(['talk', 'workshop', 'seminar', 'conference', 'other']).default('other'),
     link: z.string().url().optional(),
-    status: z.enum(['upcoming', 'past']).default('upcoming'),
     excerpt: z.string().optional(),
   }),
 });
