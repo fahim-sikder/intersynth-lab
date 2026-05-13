@@ -4,10 +4,14 @@ import SectionHeading from '../../components/SectionHeading.astro';
 import EventCard from '../../components/EventCard.astro';
 import { getCollection } from 'astro:content';
 
-const all = (await getCollection('events')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const allEvents = await getCollection('events');
 const now = new Date();
-const upcoming = all.filter((e) => e.data.date >= now || e.data.status === 'upcoming');
-const past = all.filter((e) => e.data.date < now && e.data.status !== 'upcoming');
+const upcoming = allEvents
+  .filter((e) => e.data.date >= now || e.data.status === 'upcoming')
+  .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
+const past = allEvents
+  .filter((e) => e.data.date < now && e.data.status !== 'upcoming')
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 <BaseLayout title="Events — InterSynth Lab">
   <section class="container-page py-24">
