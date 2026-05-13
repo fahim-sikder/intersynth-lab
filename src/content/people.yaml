@@ -125,4 +125,15 @@
   group: researcher
   order: 1
   links:
-    website: https://di.ku.dk/english/staff/?pure=en/persons/672153
+    website: https://www.sh.se/kontakt/forskare/karin-hansson
+
+
+- id: pernilla-josefsson
+  name: Pernilla Josefsson
+  role: Lecturer
+  affiliation: Södertörn University
+  email: pernilla.josefsson@sh.se
+  group: researcher
+  order: 2
+  links:
+    website: https://www.sh.se/kontakt/forskare/pernilla-josefsson
