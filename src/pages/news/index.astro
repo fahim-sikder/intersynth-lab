@@ -3,7 +3,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
 import NewsCard from '../../components/NewsCard.astro';
 import { getCollection } from 'astro:content';
-const news = (await getCollection('news')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const now = new Date();
+const news = (await getCollection('news')).sort(
+  (a, b) => Math.abs(a.data.date.valueOf() - now.valueOf()) - Math.abs(b.data.date.valueOf() - now.valueOf())
+);
 ---
 <BaseLayout title="News — InterSynth Lab">
   <section class="container-page py-24">
