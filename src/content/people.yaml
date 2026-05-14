@@ -7,6 +7,8 @@
   group: pi
   order: 2
   bio: Co-PI investigating on the WASP-HS research environment exploring synthetic data, facts, representations, and transparency.
+  links:
+    website: https://www.erickajohnson.se/
 
 - id: francis-lee
   name: Francis Lee
@@ -17,6 +19,8 @@
   group: pi
   order: 1
   bio: Lead investigator on the social and cultural dimensions of synthetic data and machine-learned knowledge.
+  links:
+    website: https://francislee.org/
 
 - id: ylva-soderfeldt
   name: Ylva Söderfeldt
@@ -27,6 +31,8 @@
   group: pi
   order: 3
   bio: Co-PI working at the intersection of history of ideas, medical knowledge, and synthetic data practices.
+  links:
+    website: https://www.uu.se/en/contact-and-organisation/staff?query=N17-1114
 
 - id: alicja-ostrowska
   name: Alicja Ostrowska
@@ -67,6 +73,8 @@
   photo: /people/vera-danilova.jpg
   group: researcher
   order: 8
+  links:
+    website: https://www.uu.se/en/contact-and-organisation/staff?query=N23-54
 
 - id: charlotte-hogberg
   name: Charlotte Högberg
