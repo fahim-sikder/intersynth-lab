@@ -3,10 +3,14 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
 import NewsCard from '../../components/NewsCard.astro';
 import { getCollection } from 'astro:content';
+const all = await getCollection('news');
 const now = new Date();
-const news = (await getCollection('news')).sort(
-  (a, b) => Math.abs(a.data.date.valueOf() - now.valueOf()) - Math.abs(b.data.date.valueOf() - now.valueOf())
-);
+const upcoming = all
+  .filter((n) => n.data.date >= now)
+  .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
+const past = all
+  .filter((n) => n.data.date < now)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 <BaseLayout title="News — InterSynth Lab">
   <section class="container-page py-24">
@@ -19,16 +23,38 @@ const news = (await getCollection('news')).sort(
         RSS feed
       </a>
     </div>
-    <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {news.map((n) => (
-        <NewsCard
-          title={n.data.title}
-          date={n.data.date}
-          excerpt={n.data.excerpt}
-          tags={n.data.tags}
-          href={`/news/${n.id}`}
-        />
-      ))}
+
+    <div class="mt-12">
+      <h3 class="font-mono text-xs uppercase tracking-widest text-[color:var(--color-muted)]">Upcoming</h3>
+      <div class="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {upcoming.length === 0 && <p class="text-[color:var(--color-muted)]">No upcoming news — check back soon.</p>}
+        {upcoming.map((n) => (
+          <NewsCard
+            title={n.data.title}
+            date={n.data.date}
+            excerpt={n.data.excerpt}
+            tags={n.data.tags}
+            href={`/news/${n.id}`}
+          />
+        ))}
+      </div>
     </div>
+
+    {past.length > 0 && (
+      <div class="mt-16">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-[color:var(--color-muted)]">Past</h3>
+        <div class="mt-6 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {past.map((n) => (
+            <NewsCard
+              title={n.data.title}
+              date={n.data.date}
+              excerpt={n.data.excerpt}
+              tags={n.data.tags}
+              href={`/news/${n.id}`}
+            />
+          ))}
+        </div>
+      </div>
+    )}
   </section>
 </BaseLayout>
