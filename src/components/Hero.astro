@@ -1,5 +1,9 @@
 ---
 import MeshBackground from './MeshBackground.astro';
+interface Props {
+  news: Array<{ id: string; data: { title: string; date: Date } }>;
+}
+const { news } = Astro.props;
 ---
 <section class="relative overflow-hidden">
   <MeshBackground />
@@ -25,7 +29,30 @@ import MeshBackground from './MeshBackground.astro';
       <a href="/people" class="btn btn-ghost">Meet the Team</a>
     </div>
 
-    <div class="mt-16 grid grid-cols-2 gap-6 border-t border-[color:var(--color-border)] pt-8 sm:grid-cols-4">
+    {news.length > 0 && (
+      <div class="mt-8 flex items-center gap-3 overflow-hidden">
+        <span class="shrink-0 font-mono text-xs uppercase tracking-widest text-[color:var(--color-accent-cyan)]">Lab News</span>
+        <div class="min-w-0 overflow-hidden [mask-image:linear-gradient(to_right,transparent_0%,black_4%,black_88%,transparent_100%)]">
+          <div class="animate-ticker flex whitespace-nowrap">
+            {[...news, ...news].map((item) => (
+              <>
+                <a
+                  href={`/news/${item.id}`}
+                  class="font-mono text-xs text-[color:var(--color-muted)] transition-colors hover:text-[color:var(--color-heading)]"
+                >
+                  <span class="text-[color:var(--color-accent-cyan)] opacity-70 mr-2">
+                    {item.data.date.toLocaleDateString('en', { month: 'short', day: 'numeric' })}
+                  </span>{item.data.title}
+                </a>
+                <span class="mx-4 inline-block h-1 w-1 shrink-0 self-center rounded-full bg-[color:var(--color-accent-cyan)] opacity-40 select-none"></span>
+              </>
+            ))}
+          </div>
+        </div>
+      </div>
+    )}
+
+    <div class="mt-8 grid grid-cols-2 gap-6 border-t border-[color:var(--color-border)] pt-8 sm:grid-cols-4">
       <div>
         <div class="font-mono text-2xl text-[color:var(--color-heading)]">4</div>
         <div class="mt-1 text-xs uppercase tracking-widest text-[color:var(--color-muted)]">Universities</div>

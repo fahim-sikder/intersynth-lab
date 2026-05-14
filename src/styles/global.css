@@ -178,6 +178,17 @@
   }
 }
 
+@keyframes ticker {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+.animate-ticker {
+  animation: ticker 25s linear infinite;
+}
+.animate-ticker:hover {
+  animation-play-state: paused;
+}
+
 /* Shiki dual-theme: swap CSS variables based on data-theme */
 :root[data-theme="light"] .astro-code,
 :root[data-theme="light"] .astro-code span {

@@ -15,9 +15,19 @@ const now = new Date();
 const news = newsAll
   .sort((a, b) => Math.abs(a.data.date.valueOf() - now.valueOf()) - Math.abs(b.data.date.valueOf() - now.valueOf()))
   .slice(0, 3);
+const heroNews = newsAll
+  .sort((a, b) => {
+    const aUp = a.data.date >= now;
+    const bUp = b.data.date >= now;
+    if (aUp && !bUp) return -1;
+    if (!aUp && bUp) return 1;
+    if (aUp) return a.data.date.valueOf() - b.data.date.valueOf();
+    return b.data.date.valueOf() - a.data.date.valueOf();
+  })
+  .slice(0, 5);
 ---
 <BaseLayout>
-  <Hero />
+  <Hero news={heroNews} />
 
   <!-- About teaser -->
   <section class="container-page py-24">
@@ -73,23 +83,6 @@ const news = newsAll
       ))}
     </div>
     <div class="mt-10"><a href="/people" class="btn btn-ghost">See the full team →</a></div>
-  </section>
-
-  <!-- News -->
-  <section class="container-page py-24">
-    <SectionHeading eyebrow="News" title="Latest from the lab." />
-    <div class="mt-10 grid gap-6 md:grid-cols-3">
-      {news.map((n) => (
-        <NewsCard
-          title={n.data.title}
-          date={n.data.date}
-          excerpt={n.data.excerpt}
-          tags={n.data.tags}
-          href={`/news/${n.id}`}
-        />
-      ))}
-    </div>
-    <div class="mt-10"><a href="/news" class="btn btn-ghost">All news →</a></div>
   </section>
   
   <!-- CTA -->
