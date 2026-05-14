@@ -33,6 +33,7 @@
   role: Postdoctoral Researcher
   affiliation: Massachusetts Institute of Technology · Södertörn University
   email: alicja.ostrowska@sh.se
+  photo: /people/alicja-ostrowska.jpg
   group: researcher
   order: 4
 
@@ -63,6 +64,7 @@
   role: Postdoctoral Researcher
   affiliation: Uppsala University
   email: vera.danilova@idehist.uu.se
+  photo: /people/vera-danilova.jpg
   group: researcher
   order: 8
 
@@ -82,6 +84,7 @@
   role: Associate Professor
   affiliation: Linköping University
   email: katherine.harrison@liu.se
+  photo: /people/katherine-harrison.jpg
   group: researcher
   order: 2
   links:
@@ -92,6 +95,7 @@
   role: Postdoctoral Researcher
   affiliation: Linköping University
   email: hannah.devinney@liu.se
+  photo: /people/h-devinney.jpg
   group: researcher
   order: 9
   links:
@@ -102,26 +106,29 @@
   role: Guest Professor
   affiliation: University of Copenhagen
   email: ias@di.ku.dk
+  photo: /people/irina-shklovski.jpg
   group: collaborator
   order: 9
   links:
     website: https://di.ku.dk/english/staff/?pure=en/persons/672153
 
 - id: aya-rizk
-  name: Aya Rizk 
+  name: Aya Rizk
   role: Associate Professor
   affiliation: Linköping University
   email: aya.rizk@liu.se
+  photo: /people/aya-rizk.jpg
   group: collaborator
   order: 9
   links:
-    website: https://di.ku.dk/english/staff/?pure=en/persons/672153
+    website: https://liu.se/en/employee/ayari88
 
 - id: karin-hansson
   name: Karin Hansson
   role: Professor
   affiliation: Södertörn University
   email: karin.hansson@sh.se
+  photo: /people/karin-hansson.jpg
   group: researcher
   order: 1
   links:
@@ -133,6 +140,7 @@
   role: Lecturer
   affiliation: Södertörn University
   email: pernilla.josefsson@sh.se
+  photo: /people/pernilla-josefsson.jpg
   group: researcher
   order: 2
   links:
