@@ -85,6 +85,7 @@ const publications = defineCollection({
       .object({
         pdf: z.string().url().optional(),
         doi: z.string().optional(),
+        url: z.string().url().optional(),
         code: z.string().url().optional(),
         arxiv: z.string().url().optional(),
       })
