@@ -1,3 +1,13 @@
+- id: lee2025qualities
+  title: "The Qualities of Quantities: Making Situated Chains of Representation"
+  authors: [Francis Lee, Ericka Johnson]
+  authorIds: [francis-lee, ericka-johnson]
+  venue: "Workshop on Synthetic Data: Representation and/vs Representativeness, Aarhus 2025"
+  year: 2025
+  type: workshop
+  links:
+    url: https://synthetic-data-workshop.github.io
+
 - id: sikder2026representative
   title: "Representative Synthetic Data for Fair Decision Making"
   authors: [Md Fahim Sikder]
