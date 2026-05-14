@@ -10,6 +10,7 @@ npm install
 npm run dev          # http://localhost:4321
 npm run build        # output to ./dist
 npm run preview
+npm run deploy       # deploy changes to ../intersynth-lab-site and commit to github 
 ```
 
 ## Project layout
@@ -87,9 +88,23 @@ palette globally.
 
 ## Deploy
 
-`npm run build` produces a fully static `dist/` folder. Upload its contents to
-any static host (Apache, Nginx, Netlify, S3, GitHub Pages, university web
-server). No server-side runtime is required.
+```bash
+npm run deploy
+```
 
-Update `site` in `astro.config.mjs` to your final domain so canonical URLs and
-sitemap are correct.
+> **Prerequisite:** `../intersynth-lab-site/` must exist as a cloned Git
+> repository and the working directory must be clean enough to push.
+
+This runs `deploy.sh`, which performs four steps:
+
+1. **Build** — runs `npm run build` (Astro static build into `dist/`, then
+   Pagefind search-index generation).
+2. **Sync** — rsyncs `dist/` into the sibling repository
+   `../intersynth-lab-site/`, deleting any files that were removed.
+3. **Commit** — inside `../intersynth-lab-site/`, stages all changes and
+   creates a commit timestamped `Deploy YYYY-MM-DD HH:MM:SS`. If nothing
+   changed, the commit is skipped.
+4. **Push** — pushes `origin main` of the deployment repo to GitHub, which
+   serves the live site at <https://intersynth.ai>.
+
+
