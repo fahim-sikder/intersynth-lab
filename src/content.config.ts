@@ -79,7 +79,7 @@ const publications = defineCollection({
     authorIds: z.array(z.string()).default([]),
     venue: z.string(),
     year: z.number(),
-    type: z.enum(['journal', 'conference', 'workshop', 'preprint', 'chapter', 'other']).default('other'),
+    type: z.enum(['journal', 'conference', 'workshop', 'preprint', 'chapter', 'thesis', 'other']).default('other'),
     abstract: z.string().optional(),
     links: z
       .object({

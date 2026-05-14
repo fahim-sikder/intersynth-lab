@@ -1,3 +1,113 @@
+- id: sikder2025fairness
+  title: "Promoting Intersectional Fairness Through Knowledge Distillation"
+  authors: [Md Fahim Sikder, Resmi Ramachandranpillai, Daniel de Leng, Fredrik Heintz]
+  authorIds: [md-fahim-sikder]
+  venue: ECAI 2025
+  year: 2025
+  type: conference
+  links:
+    doi: 10.3233/FAIA251214
+
+- id: sikder2025transfusion
+  title: "TransFusion: Generating Long, High Fidelity Time Series using Diffusion Models with Transformers"
+  authors: [Md Fahim Sikder, Resmi Ramachandranpillai, Fredrik Heintz]
+  authorIds: [md-fahim-sikder]
+  venue: Machine Learning with Applications
+  year: 2025
+  type: journal
+  links:
+    doi: 10.1016/j.mlwa.2025.100652
+
+- id: hogberg2025groundtruth
+  title: '"This ground truth is muddy anyway": Ground truth data assemblages for medical AI development'
+  authors: [Charlotte Högberg]
+  authorIds: [charlotte-hogberg]
+  venue: Sociologisk Forskning
+  year: 2025
+  type: journal
+  links:
+    doi: 10.37062/sf.62.27826
+
+- id: devinney2025synthetic
+  title: "Synthetic Data: Representation and/vs Representativeness"
+  authors: [H Devinney, Katherine Harrison, Vagrant Gautam, Irina Alex Shklovski]
+  authorIds: [h-devinney, katherine-harrison, irina-shklovski]
+  venue: "Adjunct Proceedings of the Sixth Decennial Aarhus Conference: Computing X Crisis"
+  year: 2025
+  type: conference
+  links:
+    doi: 10.1145/3737609.3747095
+
+- id: ramachandranpillai2024btgan
+  title: "Bt-GAN: Generating Fair Synthetic Healthdata via Bias-transforming Generative Adversarial Networks"
+  authors: [Resmi Ramachandranpillai, Md Fahim Sikder, David Bergström, Fredrik Heintz]
+  authorIds: [md-fahim-sikder]
+  venue: Journal of Artificial Intelligence Research
+  year: 2024
+  type: journal
+  links:
+    doi: 10.1613/jair.1.15317
+
+- id: sikder2024fair4free
+  title: "Fair4Free: Generating High-fidelity Fair Synthetic Samples using Data Free Distillation"
+  authors: [Md Fahim Sikder, Daniel de Leng, Fredrik Heintz]
+  authorIds: [md-fahim-sikder]
+  venue: arXiv
+  year: 2024
+  type: preprint
+  links:
+    arxiv: https://arxiv.org/abs/2410.01423
+
+- id: sikder2024syntaxagnostic
+  title: "Generating Synthetic Fair Syntax-agnostic Data by Learning and Distilling Fair Representation"
+  authors: [Md Fahim Sikder, Resmi Ramachandranpillai, Daniel de Leng, Fredrik Heintz]
+  authorIds: [md-fahim-sikder]
+  venue: arXiv
+  year: 2024
+  type: preprint
+  links:
+    arxiv: https://arxiv.org/abs/2408.10755
+
+- id: rossi2024problems
+  title: "The Problems of LLM-generated Data in Social Science Research"
+  authors: [Luca Rossi, Katherine Harrison, Irina Alex Shklovski]
+  authorIds: [katherine-harrison, irina-shklovski]
+  venue: "Sociologica – International Journal for Sociological Debate"
+  year: 2024
+  type: journal
+  links:
+    doi: 10.6092/issn.1971-8853/19576
+
+- id: johnson2024intersectional
+  title: "The intersectional hallucinations of synthetic data"
+  authors: [Ericka Johnson, Saghi Hajisharif]
+  authorIds: [ericka-johnson]
+  venue: AI & Society
+  year: 2024
+  type: journal
+  links:
+    doi: 10.1007/s00146-024-02017-8
+
+- id: ramachandranpillai2023fldgm
+  title: "Fair Latent Deep Generative Models (FLDGMs) for Syntax-Agnostic and Fair Synthetic Data Generation"
+  authors: [Resmi Ramachandranpillai, Md Fahim Sikder, Fredrik Heintz]
+  authorIds: [md-fahim-sikder]
+  venue: ECAI 2023
+  year: 2023
+  type: conference
+  links:
+    doi: 10.3233/FAIA230484
+
+- id: ostrowska2026lifenasa
+  title: "Life and AI at NASA: An Ethnography of How Scientists and Engineers Make Tools to Explore Other Worlds"
+  authors: [Alicja Ostrowska]
+  authorIds: [alicja-ostrowska]
+  venue: Chalmers University of Technology
+  year: 2026
+  type: thesis
+  links:
+    doi: 10.63959/chalmers.dt/5814
+
 - id: lee2025ontological
   title: "The ontological politics of synthetic data: Normalities, outliers, and intersectional hallucinations"
   authors: [Francis Lee, Saghi Hajisharif, Ericka Johnson]
