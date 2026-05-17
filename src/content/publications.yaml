@@ -6,7 +6,7 @@
   year: 2025
   type: workshop
   links:
-    url: https://synthetic-data-workshop.github.io
+    website: https://synthetic-data-workshop.github.io
 
 - id: sikder2026representative
   title: "Representative Synthetic Data for Fair Decision Making"
@@ -26,7 +26,7 @@
   year: 2025
   type: thesis
   links:
-    url: https://lup.lub.lu.se/record/a6bcbd84-cd84-4cdb-b905-4f3b4251f879
+    website: https://lup.lub.lu.se/record/a6bcbd84-cd84-4cdb-b905-4f3b4251f879
 
 - id: kiesewetter2025datamadeschool
   title: "Data Made School: Unpacking How Digital Data Flows Shape Schooling"
@@ -36,7 +36,7 @@
   year: 2025
   type: thesis
   links:
-    url: https://gupea.ub.gu.se/items/05733279-5845-43da-a2a2-bea549ebda7a
+    website: https://gupea.ub.gu.se/items/05733279-5845-43da-a2a2-bea549ebda7a
 
 - id: sikder2025fairness
   title: "Promoting Intersectional Fairness Through Knowledge Distillation"
