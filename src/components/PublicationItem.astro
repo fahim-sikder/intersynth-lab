@@ -45,6 +45,7 @@ const arxivId = links.arxiv?.match(/(\d{4}\.\d{4,6})/)?.[1];
         </a>
       )}
       {links.code && <a href={links.code} class="chip hover:text-[color:var(--color-heading)]">Code</a>}
+      {links.url && <a href={links.url} target="_blank" class="chip hover:text-[color:var(--color-heading)]">Website</a>}
       <a href={`/publications/${id}.bib`} class="chip hover:text-[color:var(--color-heading)]" download>.bib</a>
       <button
         type="button"
