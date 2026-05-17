@@ -35,6 +35,8 @@
   venue: University of Gothenburg
   year: 2025
   type: thesis
+  links:
+    url: https://gupea.ub.gu.se/items/05733279-5845-43da-a2a2-bea549ebda7a
 
 - id: sikder2025fairness
   title: "Promoting Intersectional Fairness Through Knowledge Distillation"
