@@ -148,6 +148,14 @@
   links:
     doi: 10.63959/chalmers.dt/5814
 
+- id: danilova2026zeroshot
+  title: "Zero-Shot Generation of Synthetic Historical Data with LLMs"
+  authors: [Vera Danilova, Julia Reed, Andrew Burchell, Gijs Aangenendt, Ylva Söderfeldt]
+  authorIds: []
+  venue: "Understanding Science with Large Language Models?: Potentials for the History, Philosophy, and Sociology of Science. Transcript Verlag"
+  year: 2026
+  type: chapter
+
 - id: lee2025ontological
   title: "The ontological politics of synthetic data: Normalities, outliers, and intersectional hallucinations"
   authors: [Francis Lee, Saghi Hajisharif, Ericka Johnson]
