@@ -151,7 +151,7 @@
 - id: danilova2026zeroshot
   title: "Zero-Shot Generation of Synthetic Historical Data with LLMs"
   authors: [Vera Danilova, Julia Reed, Andrew Burchell, Gijs Aangenendt, Ylva Söderfeldt]
-  authorIds: []
+  authorIds: [vera-danilova, ylva-soderfeldt]
   venue: "Understanding Science with Large Language Models?: Potentials for the History, Philosophy, and Sociology of Science. Transcript Verlag"
   year: 2026
   type: chapter
