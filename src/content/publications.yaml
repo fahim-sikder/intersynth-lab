@@ -165,3 +165,11 @@
   type: journal
   links:
     doi: 10.1177/20539517251318289
+
+- id: sikder026faironline
+  title: "StreamFair: Online Fair Adaptation Under Temporal Intersectional Drift"
+  authors: [Md Fahim Sikder, Ericka Johnson, Fredrik Heintz]
+  authorIds: [md-fahim-sikder, ericka-johnson]
+  venue: AITC 2026
+  year: 2026
+  type: conference
