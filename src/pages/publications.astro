@@ -4,7 +4,13 @@ import SectionHeading from '../components/SectionHeading.astro';
 import PublicationItem from '../components/PublicationItem.astro';
 import { getCollection } from 'astro:content';
 
-const pubs = (await getCollection('publications')).sort((a, b) => b.data.year - a.data.year);
+// Sort by year (newest first); within a year, theses sink below papers so the
+// latest accepted paper leads. Array.sort is stable, so equal-rank items keep
+// their file order.
+const typeRank = (t: string) => (t === 'thesis' ? 1 : 0);
+const pubs = (await getCollection('publications')).sort(
+  (a, b) => b.data.year - a.data.year || typeRank(a.data.type) - typeRank(b.data.type)
+);
 const byYear = new Map<number, typeof pubs>();
 for (const p of pubs) {
   const arr = byYear.get(p.data.year) ?? [];
