@@ -155,6 +155,17 @@
   links:
     website: https://www.sh.se/english/sodertorn-university/contact/researchers/pernilla-josefsson
 
+- id: alison-gerber
+  name: Alison Gerber
+  role: Associate Professor
+  affiliation: Lund University
+  email: alison.gerber@soc.lu.se
+  photo: /people/alison-gerber.jpg
+  group: researcher
+  order: 2
+  links:
+    website: https://portal.research.lu.se/en/persons/alison-gerber/
+
 - id: martin-jonsson
   name: Martin Jonsson
   role: Professor
