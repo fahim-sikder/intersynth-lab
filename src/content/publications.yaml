@@ -42,7 +42,7 @@
   title: "Promoting Intersectional Fairness Through Knowledge Distillation"
   authors: [Md Fahim Sikder, Resmi Ramachandranpillai, Daniel de Leng, Fredrik Heintz]
   authorIds: [md-fahim-sikder]
-  venue: ECAI 2025
+  venue: 28th European Conference on Artificial Intelligence (ECAI) 2025
   year: 2025
   type: conference
   links:
@@ -52,7 +52,7 @@
   title: "TransFusion: Generating Long, High Fidelity Time Series using Diffusion Models with Transformers"
   authors: [Md Fahim Sikder, Resmi Ramachandranpillai, Fredrik Heintz]
   authorIds: [md-fahim-sikder]
-  venue: Machine Learning with Applications
+  venue: Machine Learning with Applications (MLWA)
   year: 2025
   type: journal
   links:
@@ -82,7 +82,7 @@
   title: "Bt-GAN: Generating Fair Synthetic Healthdata via Bias-transforming Generative Adversarial Networks"
   authors: [Resmi Ramachandranpillai, Md Fahim Sikder, David Bergström, Fredrik Heintz]
   authorIds: [md-fahim-sikder]
-  venue: Journal of Artificial Intelligence Research
+  venue: Journal of Artificial Intelligence Research (JAIR)
   year: 2024
   type: journal
   links:
@@ -132,7 +132,7 @@
   title: "Fair Latent Deep Generative Models (FLDGMs) for Syntax-Agnostic and Fair Synthetic Data Generation"
   authors: [Resmi Ramachandranpillai, Md Fahim Sikder, Fredrik Heintz]
   authorIds: [md-fahim-sikder]
-  venue: ECAI 2023
+  venue: 26th European Conference on Artificial Intelligence (ECAI) 2023
   year: 2023
   type: conference
   links:
@@ -170,6 +170,14 @@
   title: "StreamFair: Online Fair Adaptation Under Temporal Intersectional Drift"
   authors: [Md Fahim Sikder, Ericka Johnson, Fredrik Heintz]
   authorIds: [md-fahim-sikder, ericka-johnson]
-  venue: AITC 2026
+  venue: AI Transparency Conference (AITC) 2026
+  year: 2026
+  type: conference
+
+- id: sikder026faircert
+  title: "FairCert: Certifiable Error Rate Fairness for ML and LLM Decision Systems"
+  authors: [Md Fahim Sikder]
+  authorIds: [md-fahim-sikder]
+  venue: Fifth European Conference on Algorithmic Fairness (ECAF)
   year: 2026
   type: conference
