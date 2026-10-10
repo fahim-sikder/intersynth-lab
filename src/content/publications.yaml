@@ -170,9 +170,11 @@
   title: "StreamFair: Online Fair Adaptation Under Temporal Intersectional Drift"
   authors: [Md Fahim Sikder, Ericka Johnson, Fredrik Heintz]
   authorIds: [md-fahim-sikder, ericka-johnson]
-  venue: AI Transparency Conference (AITC) 2026
+  venue: AI Transparency Journal
   year: 2026
-  type: conference
+  type: journal
+  links:
+    url: https://mail.aitj.org/index.php/journal/article/view/26
 
 - id: sikder026faircert
   title: "FairCert: Certifiable Error Rate Fairness for ML and LLM Decision Systems"
@@ -181,3 +183,5 @@
   venue: Fifth European Conference on Algorithmic Fairness (ECAF)
   year: 2026
   type: conference
+  links:
+    url: https://proceedings.mlr.press/v350/sikder26a.html
