@@ -4,13 +4,39 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Daily check: redeploy when an event/news date has passed since the last
+  # deploy, so events move from "Upcoming" to "Past" without a manual push.
+  schedule:
+    - cron: '15 0 * * *'
 
 concurrency:
   group: deploy
   cancel-in-progress: true
 
 jobs:
+  date-check:
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    outputs:
+      deploy: ${{ steps.check.outputs.deploy }}
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Check for passed event dates
+        id: check
+        run: |
+          last=""
+          if git fetch --depth=1 origin deploy; then
+            last=$(git log -1 --format=%cI FETCH_HEAD)
+          fi
+          node .github/scripts/date-rebuild-check.mjs "$last"
+
   build-publish:
+    needs: date-check
+    if: >-
+      always() &&
+      (github.event_name != 'schedule' || needs.date-check.outputs.deploy == 'true')
     runs-on: ubuntu-latest
     steps:
       - name: Checkout source
