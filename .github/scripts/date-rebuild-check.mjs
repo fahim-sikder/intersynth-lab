@@ -2,7 +2,7 @@
 //
 // Events and news are split into upcoming/past at build time, so the live
 // site goes stale once an event's date passes. This script looks for any
-// event or news entry whose date falls between the last deploy and now, and
+// event or news entry that became past between the last deploy and now, and
 // writes `deploy=true|false` to $GITHUB_OUTPUT.
 //
 // Usage: node .github/scripts/date-rebuild-check.mjs [last-deploy-iso-date]
@@ -10,6 +10,8 @@ import { readdirSync, readFileSync, appendFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 const DIRS = ['src/content/events', 'src/content/news'];
+// An entry becomes past once its day is over (see src/lib/dates.ts).
+const DAY_MS = 24 * 60 * 60 * 1000;
 
 function setOutput(deploy) {
   console.log(`deploy=${deploy}`);
@@ -35,7 +37,8 @@ for (const dir of DIRS) {
     if (!match) continue;
     // Same parsing as z.coerce.date() in src/content.config.ts.
     const date = new Date(match[1]);
-    if (date > since && date <= now) crossed.push(`${dir}/${name} (${match[1]})`);
+    const becomesPast = new Date(date.valueOf() + DAY_MS);
+    if (becomesPast > since && becomesPast <= now) crossed.push(`${dir}/${name} (${match[1]})`);
   }
 }
 

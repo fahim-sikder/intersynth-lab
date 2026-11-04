@@ -3,14 +3,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
 import EventCard from '../../components/EventCard.astro';
 import { getCollection } from 'astro:content';
+import { isUpcoming } from '../../lib/dates';
 
 const all = await getCollection('events');
 const now = new Date();
 const upcoming = all
-  .filter((e) => e.data.date >= now)
+  .filter((e) => isUpcoming(e.data.date, now))
   .sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
 const past = all
-  .filter((e) => e.data.date < now)
+  .filter((e) => !isUpcoming(e.data.date, now))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 ---
 <BaseLayout title="Events — InterSynth Lab">

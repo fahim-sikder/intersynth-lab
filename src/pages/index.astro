@@ -6,6 +6,7 @@ import ThemeCard from '../components/ThemeCard.astro';
 import PersonCard from '../components/PersonCard.astro';
 import NewsCard from '../components/NewsCard.astro';
 import { getCollection } from 'astro:content';
+import { isUpcoming } from '../lib/dates';
 
 const themes = await getCollection('themes');
 const people = (await getCollection('people')).sort((a, b) => a.data.order - b.data.order);
@@ -17,8 +18,8 @@ const news = newsAll
   .slice(0, 3);
 const heroNews = newsAll
   .sort((a, b) => {
-    const aUp = a.data.date >= now;
-    const bUp = b.data.date >= now;
+    const aUp = isUpcoming(a.data.date, now);
+    const bUp = isUpcoming(b.data.date, now);
     if (aUp && !bUp) return -1;
     if (!aUp && bUp) return 1;
     if (aUp) return a.data.date.valueOf() - b.data.date.valueOf();

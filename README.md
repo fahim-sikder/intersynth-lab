@@ -10,7 +10,6 @@ npm install
 npm run dev          # http://localhost:4321
 npm run build        # output to ./dist
 npm run preview
-npm run deploy       # deploy changes to ../intersynth-lab-site and commit to github 
 ```
 
 ## Project layout
@@ -73,7 +72,9 @@ Append to `src/content/people.yaml` with fields: `id`, `name`, `role`,
 ### Add an event
 
 Create `src/content/events/my-event.mdx` with frontmatter `title`, `date`,
-`location`, `type`, `status` (`upcoming` | `past`), optional `link`, `excerpt`.
+`location`, `type`, optional `link`, `excerpt`. Whether an event or news post
+is listed as upcoming or past is worked out from its `date`: it stays upcoming
+for the whole of that day.
 
 ### Add a project
 
@@ -88,23 +89,24 @@ palette globally.
 
 ## Deploy
 
-```bash
-npm run deploy
-```
+Push to `main`. That is the whole deploy.
 
-> **Prerequisite:** `../intersynth-lab-site/` must exist as a cloned Git
-> repository and the working directory must be clean enough to push.
+1. **Build** — `.github/workflows/deploy.yml` runs on every push to `main`
+   (and can be started by hand under Actions → *Build and publish to deploy
+   branch* → *Run workflow*). It runs `npm ci` and `npm run build` (Astro
+   static build into `dist/`, then Pagefind search indexing).
+2. **Publish** — it replaces the `deploy` branch of this repository with the
+   contents of `dist/`, as a single commit by `github-actions[bot]`.
+3. **Serve** — the server behind <https://intersynth.ai> (proxied through
+   Cloudflare) serves the `deploy` branch. *How that server picks up the
+   branch is not in this repository — document it here.*
 
-This runs `deploy.sh`, which performs four steps:
+Events and news are sorted into upcoming and past at build time, so the
+workflow also runs daily at 00:15 UTC. It rebuilds only if some entry's day
+ended since the last deploy (`.github/scripts/date-rebuild-check.mjs`).
 
-1. **Build** — runs `npm run build` (Astro static build into `dist/`, then
-   Pagefind search-index generation).
-2. **Sync** — rsyncs `dist/` into the sibling repository
-   `../intersynth-lab-site/`, deleting any files that were removed.
-3. **Commit** — inside `../intersynth-lab-site/`, stages all changes and
-   creates a commit timestamped `Deploy YYYY-MM-DD HH:MM:SS`. If nothing
-   changed, the commit is skipped.
-4. **Push** — pushes `origin main` of the deployment repo to GitHub, which
-   serves the live site at <https://intersynth.ai>.
+Pushing to any other branch, or opening a pull request, deploys nothing until
+it is merged into `main`.
 
-
+The old `npm run deploy` script and the `intersynth-lab-site` repository are
+no longer used.
