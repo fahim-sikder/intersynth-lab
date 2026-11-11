@@ -2,23 +2,34 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PublicationItem from '../../components/PublicationItem.astro';
 import RecordingCard from '../../components/RecordingCard.astro';
+import EventCard from '../../components/EventCard.astro';
 import { getCollection } from 'astro:content';
+import { isUpcoming } from '../../lib/dates';
 
 export async function getStaticPaths() {
   const people = await getCollection('people');
   const pubs = await getCollection('publications');
   const recordings = (await getCollection('recordings', (r) => import.meta.env.DEV || !r.data.draft))
     .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  const allEvents = (await getCollection('events')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+  const ids = new Set(people.map((p) => p.data.id));
+  for (const e of allEvents) {
+    for (const id of e.data.people) {
+      if (!ids.has(id)) throw new Error(`Event "${e.id}" lists unknown person id "${id}" (see people.yaml).`);
+    }
+  }
   return people.map((p) => {
     const mine = pubs
       .filter((pub) => (pub.data.authorIds ?? []).includes(p.data.id))
       .sort((a, b) => b.data.year - a.data.year);
     const talks = recordings.filter((r) => r.data.speakerIds.includes(p.data.id)).map((r) => r.data);
-    return { params: { id: p.data.id }, props: { person: p.data, pubs: mine.map((m) => m.data), talks } };
+    const events = allEvents.filter((e) => e.data.people.includes(p.data.id)).map((e) => e.data);
+    return { params: { id: p.data.id }, props: { person: p.data, pubs: mine.map((m) => m.data), talks, events } };
   });
 }
 
-const { person, pubs, talks } = Astro.props;
+const { person, pubs, talks, events } = Astro.props;
+const now = new Date();
 const initials = person.name
   .split(/\s+/)
   .map((w: string) => w[0])
@@ -115,6 +126,25 @@ const orcidUrl = links.orcid
               duration={r.duration}
               excerpt={r.excerpt}
               draft={r.draft}
+            />
+          ))}
+        </div>
+      </div>
+    )}
+
+    {events.length > 0 && (
+      <div class="mt-20">
+        <h2 class="font-mono text-xs uppercase tracking-widest text-[color:var(--color-muted)]">Events</h2>
+        <div class="mt-6 grid gap-6 md:grid-cols-2">
+          {events.map((e) => (
+            <EventCard
+              title={e.title}
+              date={e.date}
+              location={e.location}
+              type={e.type}
+              link={e.link}
+              status={isUpcoming(e.date, now) ? 'upcoming' : 'past'}
+              excerpt={e.excerpt}
             />
           ))}
         </div>

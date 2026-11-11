@@ -21,6 +21,9 @@ const events = defineCollection({
     type: z.enum(['talk', 'workshop', 'seminar', 'conference', 'other']).default('other'),
     link: z.string().url().optional(),
     excerpt: z.string().optional(),
+    // people.yaml ids of lab members who spoke at or organized the event;
+    // lists it on their profile.
+    people: z.array(z.string()).default([]),
   }),
 });
 
