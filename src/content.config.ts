@@ -1,4 +1,4 @@
-import { defineCollection, z } from 'astro:content';
+import { defineCollection, reference, z } from 'astro:content';
 import { glob, file } from 'astro/loaders';
 
 const news = defineCollection({
@@ -22,6 +22,33 @@ const events = defineCollection({
     link: z.string().url().optional(),
     excerpt: z.string().optional(),
   }),
+});
+
+// Recorded talks and seminars, shown in the Recordings section of /events.
+// `provider` + `videoId` drive the embed (for mediaflow, videoId is the
+// `<account>/<id>` part of a play.mediaflowpro.com/ovp/... URL); `url` is a fallback link for
+// hosts we can't embed (e.g. a LiU media page). Entries with `draft: true`
+// appear only in `npm run dev`, never in production builds.
+const recordings = defineCollection({
+  loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/recordings' }),
+  schema: z
+    .object({
+      title: z.string(),
+      date: z.coerce.date(),
+      speakers: z.array(z.string()).default([]),
+      // people.yaml ids of lab members who speak; lists it on their profile.
+      speakerIds: z.array(z.string()).default([]),
+      provider: z.enum(['youtube', 'vimeo', 'mediaflow', 'link']),
+      videoId: z.string().optional(),
+      url: z.string().url().optional(),
+      duration: z.string().optional(),
+      event: reference('events').optional(),
+      excerpt: z.string().optional(),
+      draft: z.boolean().default(false),
+    })
+    .refine((r) => (r.provider === 'link' ? !!r.url : !!r.videoId), {
+      message: 'youtube/vimeo/mediaflow recordings need `videoId`; link recordings need `url`.',
+    }),
 });
 
 const projects = defineCollection({
@@ -93,4 +120,4 @@ const publications = defineCollection({
   }),
 });
 
-export const collections = { news, events, projects, people, themes, publications };
+export const collections = { news, events, recordings, projects, people, themes, publications };

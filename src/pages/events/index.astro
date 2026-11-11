@@ -2,7 +2,8 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import SectionHeading from '../../components/SectionHeading.astro';
 import EventCard from '../../components/EventCard.astro';
-import { getCollection } from 'astro:content';
+import RecordingCard from '../../components/RecordingCard.astro';
+import { getCollection, getEntry } from 'astro:content';
 import { isUpcoming } from '../../lib/dates';
 
 const all = await getCollection('events');
@@ -13,6 +14,16 @@ const upcoming = all
 const past = all
   .filter((e) => !isUpcoming(e.data.date, now))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// Drafts show up in `npm run dev` only, so placeholder entries never ship.
+const recordings = await Promise.all(
+  (await getCollection('recordings', (r) => import.meta.env.DEV || !r.data.draft))
+    .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+    .map(async (r) => ({
+      ...r,
+      eventTitle: r.data.event ? (await getEntry(r.data.event))?.data.title : undefined,
+    })),
+);
 ---
 <BaseLayout title="Events — InterSynth Lab">
   <section class="container-page py-24">
@@ -35,6 +46,28 @@ const past = all
         ))}
       </div>
     </div>
+
+    {recordings.length > 0 && (
+      <div class="mt-16">
+        <h3 class="font-mono text-xs uppercase tracking-widest text-[color:var(--color-muted)]">Recordings</h3>
+        <div class="mt-6 grid gap-6 md:grid-cols-2">
+          {recordings.map((r) => (
+            <RecordingCard
+              title={r.data.title}
+              date={r.data.date}
+              speakers={r.data.speakers}
+              provider={r.data.provider}
+              videoId={r.data.videoId}
+              url={r.data.url}
+              duration={r.data.duration}
+              eventTitle={r.eventTitle}
+              excerpt={r.data.excerpt}
+              draft={r.data.draft}
+            />
+          ))}
+        </div>
+      </div>
+    )}
 
     {past.length > 0 && (
       <div class="mt-16">

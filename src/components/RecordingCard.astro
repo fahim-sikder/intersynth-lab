@@ -1,0 +1,105 @@
+---
+// A recorded talk. YouTube/Vimeo players are click-to-load: nothing is
+// fetched from the video host until the visitor presses play.
+interface Props {
+  title: string;
+  date: Date;
+  speakers?: string[];
+  provider: 'youtube' | 'vimeo' | 'mediaflow' | 'link';
+  videoId?: string;
+  url?: string;
+  duration?: string;
+  eventTitle?: string;
+  excerpt?: string;
+  draft?: boolean;
+}
+const { title, date, speakers = [], provider, videoId, url, duration, eventTitle, excerpt, draft } = Astro.props;
+const fmt = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'long', day: 'numeric' });
+
+const embedSrc =
+  provider === 'youtube'
+    ? `https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&rel=0`
+    : provider === 'vimeo'
+      ? `https://player.vimeo.com/video/${videoId}?autoplay=1&dnt=1`
+      : provider === 'mediaflow'
+        ? `https://play.mediaflowpro.com/ovp/${videoId}`
+        : undefined;
+const watchUrl =
+  provider === 'youtube'
+    ? `https://www.youtube.com/watch?v=${videoId}`
+    : provider === 'vimeo'
+      ? `https://vimeo.com/${videoId}`
+      : provider === 'mediaflow'
+        ? `https://play.mediaflowpro.com/ovp/${videoId}`
+        : url;
+const hostName =
+  provider === 'youtube' ? 'YouTube' : provider === 'vimeo' ? 'Vimeo' : provider === 'mediaflow' ? 'LiU Play (Mediaflow)' : 'the host site';
+---
+<article class="reveal gradient-border glass-hover overflow-hidden">
+  {embedSrc ? (
+    <div class="recording-player relative aspect-video bg-[color:var(--color-surface-1)]" data-src={embedSrc} data-title={title}>
+      <button
+        type="button"
+        class="recording-play group absolute inset-0 flex flex-col items-center justify-center gap-3 text-[color:var(--color-heading)]"
+        aria-label={`Play recording: ${title}`}
+      >
+        <span class="flex h-14 w-14 items-center justify-center rounded-full border border-[color:var(--color-border)] bg-[color:var(--color-surface)] transition-colors group-hover:border-[color:var(--color-accent-cyan)]">
+          <svg viewBox="0 0 24 24" class="ml-0.5 h-6 w-6 fill-current" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg>
+        </span>
+        <span class="px-6 text-center text-xs text-[color:var(--color-muted)]">Plays from {hostName}</span>
+      </button>
+    </div>
+  ) : (
+    <a
+      href={watchUrl}
+      target="_blank"
+      rel="noopener"
+      class="flex aspect-video items-center justify-center bg-[color:var(--color-surface-1)] text-sm font-mono text-[color:var(--color-accent-cyan)] hover:underline"
+    >
+      Watch on {hostName} →
+    </a>
+  )}
+
+  <div class="p-6">
+    <div class="flex items-center justify-between text-xs">
+      <span class="chip">
+        <span class="inline-block h-1.5 w-1.5 rounded-full bg-[color:var(--color-accent-violet)]"></span>
+        {draft ? 'draft · dev only' : 'recording'}
+      </span>
+      {duration && <span class="font-mono uppercase tracking-widest text-[color:var(--color-muted)]">{duration}</span>}
+    </div>
+    <h3 class="mt-4 text-lg font-semibold leading-snug">{title}</h3>
+    <div class="mt-2 flex flex-wrap items-center gap-3 text-xs text-[color:var(--color-muted)]">
+      <time class="font-mono" datetime={date.toISOString()}>{fmt.format(date)}</time>
+      {speakers.length > 0 && <span>· {speakers.join(', ')}</span>}
+    </div>
+    {eventTitle && <p class="mt-2 text-xs text-[color:var(--color-muted)]">From: {eventTitle}</p>}
+    {excerpt && <p class="mt-3 text-sm text-[color:var(--color-muted)]">{excerpt}</p>}
+    {embedSrc && watchUrl && (
+      <a href={watchUrl} target="_blank" rel="noopener" class="mt-4 inline-flex text-xs font-mono text-[color:var(--color-accent-cyan)] hover:underline">
+        Open on {hostName} →
+      </a>
+    )}
+  </div>
+</article>
+
+<script>
+  const wire = () => {
+    document.querySelectorAll<HTMLElement>('.recording-player').forEach((player) => {
+      const button = player.querySelector<HTMLButtonElement>('.recording-play');
+      if (!button || (button as any).__wired) return;
+      (button as any).__wired = true;
+      button.addEventListener('click', () => {
+        const iframe = document.createElement('iframe');
+        iframe.src = player.dataset.src!;
+        iframe.title = player.dataset.title ?? 'Recording';
+        iframe.allow = 'autoplay; fullscreen; picture-in-picture; encrypted-media';
+        iframe.allowFullscreen = true;
+        iframe.className = 'absolute inset-0 h-full w-full';
+        player.replaceChildren(iframe);
+      });
+    });
+  };
+  wire();
+  document.addEventListener('astro:page-load', wire);
+</script>
